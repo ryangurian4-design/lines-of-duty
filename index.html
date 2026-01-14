@@ -3,31 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="A poster-style quote gallery with masonry tiles and a bottom toolbar." />
+  <meta name="description" content="A clean quote wall with search, favorites, shuffle, and focus view." />
   <title>Signal & Study</title>
 
-  <!-- Totally different fonts -->
+  <!-- New fonts (different from your other sites) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* New look: bright editorial + paper + loud accents */
       --bg:#f7f5f0;
       --ink:#101015;
       --soft:#ffffff;
       --line: rgba(16,16,21,.12);
       --muted: rgba(16,16,21,.62);
 
-      --accent:#ff2d55;     /* neon pink */
-      --accent2:#2de2e6;    /* cyan */
-      --accent3:#ffd60a;    /* yellow */
+      --accent:#ff2d55;
+      --accent2:#2de2e6;
+      --accent3:#ffd60a;
 
       --shadow: 0 12px 28px rgba(0,0,0,.12);
       --shadow2: 0 18px 46px rgba(0,0,0,.16);
 
-      --r: 14px; /* sharper corners */
+      --r: 14px;
       --headline: "Unbounded", system-ui, sans-serif;
       --body: "Inter", system-ui, sans-serif;
       --mono: "Space Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -52,7 +51,6 @@
       font-family: var(--body);
     }
 
-    /* Big poster header (totally different from your others) */
     .hero{
       position: relative;
       padding: 26px 18px 14px;
@@ -63,7 +61,7 @@
       content:"";
       position:absolute;
       inset:-120px -120px auto -120px;
-      height: 340px;
+      height: 320px;
       background:
         radial-gradient(240px 240px at 15% 40%, rgba(255,45,85,.35), transparent 60%),
         radial-gradient(260px 260px at 55% 20%, rgba(45,226,230,.28), transparent 60%),
@@ -75,15 +73,11 @@
     .heroInner{
       max-width: 1150px;
       margin: 0 auto;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:16px;
       position:relative;
       z-index:1;
     }
 
-    .brand h1{
+    h1{
       font-family: var(--headline);
       margin:0;
       font-size: clamp(26px, 3.6vw, 52px);
@@ -91,27 +85,14 @@
       letter-spacing: -0.02em;
       text-transform: uppercase;
     }
-    .brand p{
+    .sub{
       margin: 10px 0 0;
-      max-width: 70ch;
+      max-width: 78ch;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.45;
     }
 
-    .stamp{
-      font-family: var(--mono);
-      border: 1px solid var(--line);
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.55);
-      box-shadow: var(--shadow);
-      white-space: nowrap;
-      font-size: 12px;
-    }
-    [data-theme="noir"] .stamp{ background: rgba(255,255,255,.06); }
-
-    /* Filter strip (no dropdown bar like your others) */
     .filters{
       max-width: 1150px;
       margin: 14px auto 0;
@@ -122,7 +103,6 @@
     }
     @media (max-width: 920px){
       .filters{ grid-template-columns: 1fr; }
-      .heroInner{ flex-direction:column; align-items:flex-start; }
     }
 
     .field label{
@@ -146,17 +126,12 @@
       font-size: 14px;
       box-shadow: var(--shadow);
     }
-    [data-theme="noir"] input,
-    [data-theme="noir"] select{
-      background: var(--soft);
-    }
 
     input:focus, select:focus{
       border-color: rgba(255,45,85,.65);
       box-shadow: 0 0 0 4px rgba(255,45,85,.16), var(--shadow);
     }
 
-    /* Masonry grid: new vibe */
     .gridWrap{
       max-width: 1150px;
       margin: 0 auto;
@@ -252,7 +227,6 @@
     [data-theme="noir"] .favMark{ background: rgba(255,255,255,.08); }
     .tile.fav .favMark{ display:block; }
 
-    /* Bottom toolbar (new vs your side buttons / top bars) */
     .dock{
       position: fixed;
       left: 50%;
@@ -271,16 +245,7 @@
       justify-content:space-between;
       z-index: 999;
     }
-    [data-theme="noir"] .dock{
-      background: rgba(18,18,26,.72);
-    }
-
-    .dockLeft{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      min-width: 140px;
-    }
+    [data-theme="noir"] .dock{ background: rgba(18,18,26,.72); }
 
     .badge{
       font-family: var(--mono);
@@ -299,7 +264,6 @@
       justify-content:flex-end;
     }
 
-    /* Completely different button style: squared, bold, no gradients */
     .btn{
       font-family: var(--mono);
       font-size: 12px;
@@ -324,7 +288,7 @@
     .btn.cyan{ border-color: var(--accent2); color: var(--accent2); }
     .btn.cyan:hover{ background: var(--accent2); color: #001014; }
 
-    .btn.sun{ border-color: var(--accent3); color: var(--sun); }
+    .btn.sun{ border-color: var(--accent3); color: var(--accent3); }
     .btn.sun:hover{ background: var(--accent3); color: #101015; }
 
     .btn.ghost{
@@ -336,7 +300,6 @@
       color: var(--ink);
     }
 
-    /* Modal */
     .overlay{
       position: fixed;
       inset:0;
@@ -394,13 +357,6 @@
       color: var(--muted);
     }
 
-    .modalBtns{
-      margin-top: 14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
     .toast{
       position: fixed;
       left: 50%;
@@ -430,11 +386,8 @@
 <body>
   <section class="hero">
     <div class="heroInner">
-      <div class="brand">
-        <h1>Signal &amp; Study</h1>
-        <p>A loud, poster-style quote wall. Click any tile to open it in Focus. Save favorites, shuffle, and add your own verified quotes from other books.</p>
-      </div>
-      <div class="stamp" id="stamp">Edition: Web • Layout: Masonry</div>
+      <h1>Signal &amp; Study</h1>
+      <p class="sub">Click any tile to open it. Save favorites, shuffle, search by theme or book.</p>
     </div>
   </section>
 
@@ -452,7 +405,6 @@
       <select id="view">
         <option value="all">All</option>
         <option value="favorites">Favorites</option>
-        <option value="user">User-added</option>
       </select>
     </div>
   </section>
@@ -462,19 +414,15 @@
   </main>
 
   <div class="dock">
-    <div class="dockLeft">
-      <div class="badge" id="countBadge">0 tiles</div>
-    </div>
+    <div class="badge" id="countBadge">0 tiles</div>
     <div class="dockBtns">
       <button class="btn ghost" id="themeBtn">Theme</button>
       <button class="btn cyan" id="shuffleBtn">Shuffle</button>
       <button class="btn pink" id="copyBtn">Copy</button>
       <button class="btn sun" id="favBtn">Favorite</button>
-      <button class="btn" id="addBtn">Add Quote</button>
     </div>
   </div>
 
-  <!-- Focus modal -->
   <div class="overlay" id="overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true">
       <div class="modalTop">
@@ -484,54 +432,10 @@
       <div class="modalBody">
         <p class="big" id="modalQuote"></p>
         <div class="modalMeta" id="modalMeta"></div>
-        <div class="modalBtns">
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
           <button class="btn cyan" id="modalCopy">Copy</button>
           <button class="btn sun" id="modalFav">Favorite</button>
           <button class="btn pink" id="modalNext">Next</button>
-        </div>
-        <div style="margin-top:12px;color:var(--muted);font-family:var(--mono);font-size:12px;">
-          Tip: Use “Add Quote” to paste exact lines from other books you’ve read.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add Quote modal -->
-  <div class="overlay" id="addOverlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modalTop">
-        <strong>Add Your Quote</strong>
-        <button class="btn ghost" id="addClose" style="padding:8px 10px;border-width:1px;">Close</button>
-      </div>
-      <div class="modalBody">
-        <div class="field">
-          <label>Quote (paste exact text)</label>
-          <input id="aq_text" placeholder='Example: "..."' />
-        </div>
-        <div class="field" style="margin-top:10px;">
-          <label>Book</label>
-          <input id="aq_book" placeholder="Book title" />
-        </div>
-        <div class="field" style="margin-top:10px;">
-          <label>Author</label>
-          <input id="aq_author" placeholder="Author name" />
-        </div>
-        <div class="field" style="margin-top:10px;">
-          <label>Citation (optional)</label>
-          <input id="aq_cite" placeholder="(Author page#) or chapter" />
-        </div>
-        <div class="field" style="margin-top:10px;">
-          <label>Tags (comma separated)</label>
-          <input id="aq_tags" placeholder="reading, prayer, questions" />
-        </div>
-
-        <div class="modalBtns" style="margin-top:14px;">
-          <button class="btn pink" id="aq_save">Save</button>
-          <button class="btn ghost" id="aq_clear">Clear</button>
-        </div>
-
-        <div style="margin-top:10px;color:var(--muted);font-family:var(--mono);font-size:12px;">
-          Saved quotes stay in your browser (localStorage).
         </div>
       </div>
     </div>
@@ -540,27 +444,31 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // Your quote included EXACTLY as typed (unchanged).
-    // Other entries include:
-    // - Original thematic lines (labeled "Original")
-    // - Pre-labeled "Paste your quote" tiles for other books (so you can add real quotes safely)
+    // Your quote is kept EXACTLY as you provided it. (Not first.)
+    // All other quotes below are original lines in a similar idea-set (reading/study/prayer/questions).
 
-    const baseQuotes = [
-      // Original tiles (not attributed to books)
-      { id:"o1", text:"He studied like a person trying to build a doorway out of facts.", book:"Original", author:"—", cite:"", tags:["study","seeking"] },
-      { id:"o2", text:"Prayer was the only language he had left for the questions.", book:"Original", author:"—", cite:"", tags:["prayer","questions"] },
-      { id:"o3", text:"Reading didn’t calm him—it sharpened the need to know.", book:"Original", author:"—", cite:"", tags:["reading","questions"] },
+    const quotes = [
+      { id:"q1", text:"He studied until the page stopped being information and started being responsibility.", book:"Original", author:"—", cite:"", tags:["study","responsibility"] },
+      { id:"q2", text:"Prayer didn’t erase the questions; it taught him how to carry them.", book:"Original", author:"—", cite:"", tags:["prayer","questions"] },
+      { id:"q3", text:"He read for peace, but the words kept waking him up.", book:"Original", author:"—", cite:"", tags:["reading","restlessness"] },
 
-      // Your required quote (unchanged)
-      { id:"wiesel-4", text:"I read, I studied, I prayed... I wanted to ask him the questions that thronged my mind", book:"Night", author:"Elie Wiesel", cite:"(Wiesel 4)", tags:["reading","study","prayer","questions"] },
+      { id:"wiesel-4",
+        text:"I read, I studied, I prayed... I wanted to ask him the questions that thronged my mind",
+        book:"Night",
+        author:"Elie Wiesel",
+        cite:"(Wiesel 4)",
+        tags:["reading","study","prayer","questions"]
+      },
 
-      { id:"o4", text:"He wanted answers, but he learned to live inside the asking.", book:"Original", author:"—", cite:"", tags:["questions","faith"] },
-      { id:"o5", text:"He read as if the next sentence might finally explain the world.", book:"Original", author:"—", cite:"", tags:["reading","truth"] },
-
-      // “Different books” slots (you paste exact quotes later)
-      { id:"slot1", text:"PASTE A QUOTE HERE", book:"The Book Thief", author:"Markus Zusak", cite:"", tags:["slot","war","reading"], isSlot:true },
-      { id:"slot2", text:"PASTE A QUOTE HERE", book:"The Human Comedy", author:"William Saroyan", cite:"", tags:["slot","family","duty"], isSlot:true },
-      { id:"slot3", text:"PASTE A QUOTE HERE", book:"Your choice", author:"Your choice", cite:"", tags:["slot"], isSlot:true },
+      { id:"q4", text:"He tried to study like a shield, but knowledge isn’t armor—only light.", book:"Original", author:"—", cite:"", tags:["study","truth"] },
+      { id:"q5", text:"The more he learned, the louder the unanswered parts became.", book:"Original", author:"—", cite:"", tags:["learning","questions"] },
+      { id:"q6", text:"He prayed in short sentences, as if breath itself was the limit.", book:"Original", author:"—", cite:"", tags:["prayer","fear"] },
+      { id:"q7", text:"He kept reading because stopping felt like surrender.", book:"Original", author:"—", cite:"", tags:["reading","endurance"] },
+      { id:"q8", text:"He wanted one clean answer, but life only offered complicated truth.", book:"Original", author:"—", cite:"", tags:["truth","complexity"] },
+      { id:"q9", text:"His questions arrived faster than his courage, but both arrived.", book:"Original", author:"—", cite:"", tags:["questions","courage"] },
+      { id:"q10", text:"He studied quietly, like someone trying not to disturb grief.", book:"Original", author:"—", cite:"", tags:["study","grief"] },
+      { id:"q11", text:"He read as if a sentence could be a map out of darkness.", book:"Original", author:"—", cite:"", tags:["reading","hope"] },
+      { id:"q12", text:"He prayed without certainty, which was the most honest prayer he had.", book:"Original", author:"—", cite:"", tags:["prayer","doubt"] }
     ];
 
     const els = {
@@ -574,7 +482,6 @@
       shuffleBtn: document.getElementById("shuffleBtn"),
       copyBtn: document.getElementById("copyBtn"),
       favBtn: document.getElementById("favBtn"),
-      addBtn: document.getElementById("addBtn"),
 
       overlay: document.getElementById("overlay"),
       closeBtn: document.getElementById("closeBtn"),
@@ -585,42 +492,26 @@
       modalFav: document.getElementById("modalFav"),
       modalNext: document.getElementById("modalNext"),
 
-      addOverlay: document.getElementById("addOverlay"),
-      addClose: document.getElementById("addClose"),
-      aq_text: document.getElementById("aq_text"),
-      aq_book: document.getElementById("aq_book"),
-      aq_author: document.getElementById("aq_author"),
-      aq_cite: document.getElementById("aq_cite"),
-      aq_tags: document.getElementById("aq_tags"),
-      aq_save: document.getElementById("aq_save"),
-      aq_clear: document.getElementById("aq_clear"),
-
       toast: document.getElementById("toast"),
     };
 
     const storage = {
-      getTheme: () => localStorage.getItem("ss_theme") || "paper",
-      setTheme: (t) => localStorage.setItem("ss_theme", t),
+      getTheme: () => localStorage.getItem("ss_theme2") || "paper",
+      setTheme: (t) => localStorage.setItem("ss_theme2", t),
       getFavs: () => {
-        try { return JSON.parse(localStorage.getItem("ss_favs") || "[]"); } catch { return []; }
+        try { return JSON.parse(localStorage.getItem("ss_favs2") || "[]"); } catch { return []; }
       },
-      setFavs: (arr) => localStorage.setItem("ss_favs", JSON.stringify(arr)),
-      getUser: () => {
-        try { return JSON.parse(localStorage.getItem("ss_user") || "[]"); } catch { return []; }
-      },
-      setUser: (arr) => localStorage.setItem("ss_user", JSON.stringify(arr)),
+      setFavs: (arr) => localStorage.setItem("ss_favs2", JSON.stringify(arr)),
     };
 
     let favorites = new Set(storage.getFavs());
-    let userQuotes = storage.getUser();
-    let quotes = [];
     let currentId = null;
 
     function showToast(msg){
       els.toast.textContent = msg;
       els.toast.classList.add("show");
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => els.toast.classList.remove("show"), 1400);
+      showToast._t = setTimeout(() => els.toast.classList.remove("show"), 1300);
     }
 
     function escapeHtml(str){
@@ -631,26 +522,17 @@
 
     function uniq(arr){ return Array.from(new Set(arr)).sort((a,b)=>a.localeCompare(b)); }
 
-    function rebuildQuotes(){
-      // Put user quotes into the mix but NOT first
-      quotes = [
-        ...baseQuotes.slice(0, 2),
-        ...userQuotes,
-        ...baseQuotes.slice(2)
-      ];
-    }
-
-    function buildBookFilter(list){
-      const books = uniq(list.map(q => q.book));
-      els.book.innerHTML =
-        `<option value="">All books</option>` +
-        books.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
-    }
-
     function matches(q, item){
       if(!q) return true;
       const hay = [item.text, item.book, item.author, item.cite || "", ...(item.tags||[])].join(" ").toLowerCase();
       return hay.includes(q.toLowerCase());
+    }
+
+    function buildBookFilter(){
+      const books = uniq(quotes.map(q => q.book));
+      els.book.innerHTML =
+        `<option value="">All books</option>` +
+        books.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
     }
 
     function filtered(){
@@ -661,39 +543,21 @@
       return quotes.filter(item => {
         if(book && item.book !== book) return false;
         if(view === "favorites" && !favorites.has(item.id)) return false;
-        if(view === "user" && !item.isUser) return false;
         return matches(q, item);
       });
     }
 
     function render(){
       const list = filtered();
-
       els.countBadge.textContent = `${list.length} tiles`;
 
       if(!currentId || !list.some(x => x.id === currentId)){
         currentId = list[0]?.id || null;
       }
 
-      if(list.length === 0){
-        els.grid.innerHTML = `
-          <div class="tile">
-            <div class="ribbon"></div>
-            <div class="tileBody">
-              <p class="quote">No results. Clear your filters.</p>
-              <div class="meta"><span class="pill">Tip</span><span>Try removing the book filter.</span></div>
-            </div>
-          </div>`;
-        return;
-      }
-
       els.grid.innerHTML = list.map(q => {
         const isFav = favorites.has(q.id);
         const tags = (q.tags||[]).slice(0, 5);
-        const title = q.book || "—";
-        const author = q.author || "—";
-        const cite = q.cite || "";
-
         return `
           <article class="tile ${isFav ? "fav" : ""}" data-id="${escapeHtml(q.id)}">
             <div class="ribbon"></div>
@@ -701,11 +565,9 @@
             <div class="tileBody">
               <p class="quote">“${escapeHtml(q.text)}”</p>
               <div class="meta">
-                <span class="pill">${escapeHtml(title)}</span>
-                <span class="pill">${escapeHtml(author)}</span>
-                ${cite ? `<span class="pill">${escapeHtml(cite)}</span>` : ""}
-                ${q.isSlot ? `<span class="pill" style="border-color:var(--accent);color:var(--accent);">PASTE ME</span>` : ""}
-                ${q.isUser ? `<span class="pill" style="border-color:var(--accent2);color:var(--accent2);">USER</span>` : ""}
+                <span class="pill">${escapeHtml(q.book || "—")}</span>
+                <span class="pill">${escapeHtml(q.author || "—")}</span>
+                ${q.cite ? `<span class="pill">${escapeHtml(q.cite)}</span>` : ""}
               </div>
               <div class="tagRow">
                 ${tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
@@ -727,9 +589,8 @@
       els.modalMeta.innerHTML = `
         <span class="pill">${escapeHtml(q.author || "—")}</span>
         ${q.cite ? `<span class="pill">${escapeHtml(q.cite)}</span>` : `<span class="pill">—</span>`}
-        <span class="pill">${favorites.has(q.id) ? "★ Favorited" : "☆ Not saved"}</span>
+        <span class="pill">${favorites.has(q.id) ? "★ Saved" : "☆ Not saved"}</span>
       `;
-
       els.modalFav.textContent = favorites.has(q.id) ? "Unfavorite" : "Favorite";
 
       els.overlay.classList.add("show");
@@ -748,8 +609,18 @@
       storage.setFavs(Array.from(favorites));
       showToast(favorites.has(id) ? "Favorited" : "Removed");
       render();
-      // update modal button text if open
       els.modalFav.textContent = favorites.has(id) ? "Unfavorite" : "Favorite";
+    }
+
+    function fallbackCopy(text){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand("copy"); }catch(e){}
+      document.body.removeChild(ta);
     }
 
     async function copyCurrent(){
@@ -767,17 +638,6 @@
         fallbackCopy(text);
         showToast("Copied");
       }
-    }
-
-    function fallbackCopy(text){
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.left = "-9999px";
-      document.body.appendChild(ta);
-      ta.select();
-      try{ document.execCommand("copy"); }catch(e){}
-      document.body.removeChild(ta);
     }
 
     function shuffle(){
@@ -802,53 +662,13 @@
       if(next === "noir") document.documentElement.setAttribute("data-theme","noir");
       else document.documentElement.removeAttribute("data-theme");
       storage.setTheme(next);
-      showToast("Theme changed");
+      showToast("Theme");
     }
 
     function initTheme(){
       const t = storage.getTheme();
       if(t === "noir") document.documentElement.setAttribute("data-theme","noir");
       else document.documentElement.removeAttribute("data-theme");
-    }
-
-    function openAdd(){
-      els.addOverlay.classList.add("show");
-      els.addOverlay.setAttribute("aria-hidden","false");
-    }
-    function closeAdd(){
-      els.addOverlay.classList.remove("show");
-      els.addOverlay.setAttribute("aria-hidden","true");
-    }
-    function clearAdd(){
-      els.aq_text.value = "";
-      els.aq_book.value = "";
-      els.aq_author.value = "";
-      els.aq_cite.value = "";
-      els.aq_tags.value = "";
-    }
-
-    function saveUserQuote(){
-      const text = (els.aq_text.value || "").trim();
-      const book = (els.aq_book.value || "").trim() || "User quote";
-      const author = (els.aq_author.value || "").trim() || "—";
-      const cite = (els.aq_cite.value || "").trim();
-      const tags = (els.aq_tags.value || "").split(",").map(s => s.trim()).filter(Boolean);
-
-      if(!text){
-        showToast("Paste a quote first");
-        return;
-      }
-
-      const id = "u_" + Math.random().toString(16).slice(2);
-      userQuotes.unshift({ id, text, book, author, cite, tags, isUser:true });
-      storage.setUser(userQuotes);
-
-      rebuildQuotes();
-      buildBookFilter(quotes);
-      render();
-      closeAdd();
-      showToast("Saved quote");
-      clearAdd();
     }
 
     function wire(){
@@ -866,32 +686,22 @@
       els.shuffleBtn.addEventListener("click", shuffle);
       els.copyBtn.addEventListener("click", copyCurrent);
       els.favBtn.addEventListener("click", () => toggleFavorite(currentId));
-      els.addBtn.addEventListener("click", openAdd);
 
-      // Focus modal
       els.closeBtn.addEventListener("click", closeFocus);
       els.overlay.addEventListener("click", (e) => { if(e.target === els.overlay) closeFocus(); });
+
       els.modalCopy.addEventListener("click", copyCurrent);
       els.modalFav.addEventListener("click", () => toggleFavorite(currentId));
       els.modalNext.addEventListener("click", nextInFocus);
 
-      // Add modal
-      els.addClose.addEventListener("click", closeAdd);
-      els.addOverlay.addEventListener("click", (e) => { if(e.target === els.addOverlay) closeAdd(); });
-      els.aq_clear.addEventListener("click", clearAdd);
-      els.aq_save.addEventListener("click", saveUserQuote);
-
-      // Minimal keyboard (no banner shown)
       window.addEventListener("keydown", (e) => {
-        if(e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT")) return;
-        if(e.key === "Escape"){ closeFocus(); closeAdd(); }
+        if(e.key === "Escape") closeFocus();
       });
     }
 
     (function boot(){
       initTheme();
-      rebuildQuotes();
-      buildBookFilter(quotes);
+      buildBookFilter();
       currentId = quotes.find(q => q.id !== "wiesel-4")?.id || quotes[0]?.id || null;
       wire();
       render();
