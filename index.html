@@ -3,128 +3,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="A timeline-style quote gallery with focus mode, favorites, and shuffle." />
-  <meta name="theme-color" content="#071421" />
-  <title>Quote Current</title>
+  <meta name="description" content="A poster-style quote gallery with masonry tiles and a bottom toolbar." />
+  <title>Signal & Study</title>
+
+  <!-- Totally different fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* Totally new palette: deep ocean + coral + mint */
-      --bg1:#071421;
-      --bg2:#0b1f33;
-      --card:#0f2a44;
-      --card2:#123352;
-      --ink:#eaf6ff;
-      --muted:#b8d3e6;
-      --line: rgba(234,246,255,.14);
+      /* New look: bright editorial + paper + loud accents */
+      --bg:#f7f5f0;
+      --ink:#101015;
+      --soft:#ffffff;
+      --line: rgba(16,16,21,.12);
+      --muted: rgba(16,16,21,.62);
 
-      --coral:#ff5a7a;
-      --mint:#48f5c6;
-      --sun:#ffd66b;
+      --accent:#ff2d55;     /* neon pink */
+      --accent2:#2de2e6;    /* cyan */
+      --accent3:#ffd60a;    /* yellow */
 
-      --shadow: 0 18px 52px rgba(0,0,0,.55);
-      --r: 18px;
-      --mono: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
-      --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      --shadow: 0 12px 28px rgba(0,0,0,.12);
+      --shadow2: 0 18px 46px rgba(0,0,0,.16);
+
+      --r: 14px; /* sharper corners */
+      --headline: "Unbounded", system-ui, sans-serif;
+      --body: "Inter", system-ui, sans-serif;
+      --mono: "Space Mono", ui-monospace, Menlo, Consolas, monospace;
     }
 
-    [data-theme="light"]{
-      --bg1:#f7fbff;
-      --bg2:#eef6ff;
-      --card:#ffffff;
-      --card2:#ffffff;
-      --ink:#0b1620;
-      --muted:#415c70;
-      --line: rgba(11,22,32,.12);
-
-      --coral:#cc1f56;
-      --mint:#058a74;
-      --sun:#b78300;
-
-      --shadow: 0 18px 52px rgba(10,20,30,.12);
+    [data-theme="noir"]{
+      --bg:#0b0b10;
+      --ink:#f4f3f8;
+      --soft:#12121a;
+      --line: rgba(244,243,248,.14);
+      --muted: rgba(244,243,248,.62);
+      --shadow: 0 12px 28px rgba(0,0,0,.55);
+      --shadow2: 0 18px 46px rgba(0,0,0,.70);
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: var(--sans);
+      background: var(--bg);
       color: var(--ink);
+      font-family: var(--body);
+    }
+
+    /* Big poster header (totally different from your others) */
+    .hero{
+      position: relative;
+      padding: 26px 18px 14px;
+      border-bottom: 1px solid var(--line);
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-120px -120px auto -120px;
+      height: 340px;
       background:
-        radial-gradient(900px 700px at 15% 10%, rgba(72,245,198,.14), transparent 55%),
-        radial-gradient(900px 700px at 85% 10%, rgba(255,90,122,.12), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
+        radial-gradient(240px 240px at 15% 40%, rgba(255,45,85,.35), transparent 60%),
+        radial-gradient(260px 260px at 55% 20%, rgba(45,226,230,.28), transparent 60%),
+        radial-gradient(260px 260px at 85% 65%, rgba(255,214,10,.25), transparent 60%);
+      filter: blur(2px);
+      pointer-events:none;
     }
 
-    .wrap{
-      max-width: 1100px;
+    .heroInner{
+      max-width: 1150px;
       margin: 0 auto;
-      padding: 22px 16px 80px;
-    }
-
-    header{
       display:flex;
       align-items:flex-end;
       justify-content:space-between;
-      gap:14px;
-      margin-bottom: 16px;
+      gap:16px;
+      position:relative;
+      z-index:1;
     }
 
-    .titleBlock h1{
+    .brand h1{
+      font-family: var(--headline);
       margin:0;
-      font-size: clamp(24px, 3.2vw, 44px);
-      letter-spacing:-.03em;
-      line-height:1.05;
+      font-size: clamp(26px, 3.6vw, 52px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
     }
-
-    .titleBlock p{
-      margin:8px 0 0;
+    .brand p{
+      margin: 10px 0 0;
+      max-width: 70ch;
       color: var(--muted);
-      max-width: 80ch;
       font-size: 14px;
-      line-height:1.45;
+      line-height: 1.45;
     }
 
-    .hud{
-      display:flex;
-      flex-direction:column;
-      align-items:flex-end;
-      gap:10px;
-      min-width: 240px;
-    }
-
-    .pill{
-      border:1px solid var(--line);
-      border-radius: 999px;
-      padding: 8px 10px;
+    .stamp{
       font-family: var(--mono);
-      font-size:12px;
-      color: var(--muted);
-      background: rgba(255,255,255,.04);
-      text-align:right;
-      width: fit-content;
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
       box-shadow: var(--shadow);
+      white-space: nowrap;
+      font-size: 12px;
     }
+    [data-theme="noir"] .stamp{ background: rgba(255,255,255,.06); }
 
-    .controls{
-      margin-top: 10px;
+    /* Filter strip (no dropdown bar like your others) */
+    .filters{
+      max-width: 1150px;
+      margin: 14px auto 0;
+      padding: 0 18px 14px;
       display:grid;
-      grid-template-columns: 1.3fr .8fr .8fr;
-      gap:10px;
-      align-items:end;
+      grid-template-columns: 1.4fr .8fr .8fr;
+      gap: 10px;
     }
-    @media (max-width: 900px){
-      header{ flex-direction:column; align-items:flex-start; }
-      .hud{ align-items:flex-start; }
-      .controls{ grid-template-columns: 1fr; }
+    @media (max-width: 920px){
+      .filters{ grid-template-columns: 1fr; }
+      .heroInner{ flex-direction:column; align-items:flex-start; }
     }
 
-    label{
+    .field label{
       display:block;
       font-family: var(--mono);
-      font-size:11px;
-      letter-spacing:.12em;
+      font-size: 11px;
+      letter-spacing: .10em;
       text-transform: uppercase;
       color: var(--muted);
       margin: 0 0 6px 4px;
@@ -133,288 +138,287 @@
     input, select{
       width:100%;
       padding: 12px 12px;
-      border-radius: 16px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.05);
+      border-radius: var(--r);
+      border: 1px solid var(--line);
+      background: var(--soft);
       color: var(--ink);
       outline:none;
       font-size: 14px;
+      box-shadow: var(--shadow);
     }
-    input::placeholder{ color: rgba(184,211,230,.72); }
-    [data-theme="light"] input::placeholder{ color: rgba(65,92,112,.70); }
+    [data-theme="noir"] input,
+    [data-theme="noir"] select{
+      background: var(--soft);
+    }
 
     input:focus, select:focus{
-      border-color: rgba(72,245,198,.70);
-      box-shadow: 0 0 0 4px rgba(72,245,198,.15);
+      border-color: rgba(255,45,85,.65);
+      box-shadow: 0 0 0 4px rgba(255,45,85,.16), var(--shadow);
     }
 
-    .btnRow{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin: 14px 0 18px;
+    /* Masonry grid: new vibe */
+    .gridWrap{
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 12px 18px 110px;
     }
+    .masonry{
+      column-count: 3;
+      column-gap: 14px;
+    }
+    @media (max-width: 980px){ .masonry{ column-count: 2; } }
+    @media (max-width: 620px){ .masonry{ column-count: 1; } }
 
-    .btn{
-      border:1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.16));
-      color: var(--ink);
-      border-radius: 16px;
-      padding: 11px 12px;
-      cursor:pointer;
-      font-weight: 950;
-      font-size: 13px;
-      user-select:none;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-      box-shadow: var(--shadow);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .btn:hover{ border-color: rgba(255,90,122,.60); }
-    .btn:active{ transform: translateY(1px); }
-
-    .dot{
-      width:10px; height:10px; border-radius:999px;
-      background: var(--mint);
-      box-shadow: 0 0 0 4px rgba(72,245,198,.15);
-      flex:0 0 auto;
-    }
-    .dot.coral{ background: var(--coral); box-shadow: 0 0 0 4px rgba(255,90,122,.14); }
-    .dot.sun{ background: var(--sun); box-shadow: 0 0 0 4px rgba(255,214,107,.14); }
-
-    /* TIMELINE */
-    .timeline{
-      position: relative;
-      padding-left: 26px;
-      margin-top: 4px;
-    }
-    .timeline::before{
-      content:"";
-      position:absolute;
-      left: 11px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, rgba(72,245,198,.55), rgba(255,90,122,.55));
-      border-radius: 999px;
-      opacity: .9;
-    }
-
-    .entry{
-      position: relative;
-      margin: 14px 0;
-    }
-    .pin{
-      position:absolute;
-      left: -2px;
-      top: 18px;
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: var(--shadow);
-    }
-    .pin::after{
-      content:"";
-      width: 10px; height: 10px;
-      border-radius: 999px;
-      background: var(--mint);
-    }
-
-    .card{
-      border:1px solid var(--line);
-      border-radius: 20px;
-      background:
-        radial-gradient(900px 400px at 20% 0%, rgba(72,245,198,.10), transparent 55%),
-        radial-gradient(900px 400px at 85% 0%, rgba(255,90,122,.10), transparent 55%),
-        linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.18)),
-        var(--card);
-      box-shadow: var(--shadow);
+    .tile{
+      break-inside: avoid;
+      display:block;
+      margin: 0 0 14px;
+      border-radius: var(--r);
+      border: 1px solid var(--line);
+      background: var(--soft);
+      box-shadow: var(--shadow2);
       overflow:hidden;
-    }
-    [data-theme="light"] .card{
-      background:
-        radial-gradient(900px 400px at 20% 0%, rgba(5,138,116,.10), transparent 55%),
-        radial-gradient(900px 400px at 85% 0%, rgba(204,31,86,.10), transparent 55%),
-        linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.00)),
-        var(--card);
-    }
-
-    .cardHead{
-      padding: 14px 14px 12px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:flex-start;
+      position:relative;
       cursor:pointer;
+      transition: transform .08s ease;
+    }
+    .tile:active{ transform: translateY(1px); }
+
+    .ribbon{
+      height: 8px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
     }
 
-    .miniTitle{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+    .tileBody{
+      padding: 14px 14px 12px;
     }
 
-    .flag{
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      white-space:nowrap;
-    }
-    .flag.star{ color: var(--sun); border-color: rgba(255,214,107,.40); background: rgba(255,214,107,.10); }
-
-    .excerpt{
-      margin: 10px 0 0;
-      font-size: 16px;
-      line-height: 1.45;
-      letter-spacing: -.01em;
-      color: var(--ink);
-    }
-
-    .cardBody{
-      padding: 0 14px 14px;
-      display:none;
-    }
-    .entry.open .cardBody{ display:block; }
-
-    .full{
-      margin: 0;
+    .quote{
+      margin:0;
       font-size: 18px;
-      line-height: 1.5;
-      color: var(--ink);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
     }
 
     .meta{
       margin-top: 12px;
       display:flex;
       flex-wrap:wrap;
-      gap:10px 14px;
+      gap: 8px;
+      align-items:center;
       color: var(--muted);
       font-family: var(--mono);
-      font-size: 12px;
-      align-items:center;
+      font-size: 11px;
     }
 
-    .tags{
+    .pill{
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(255,255,255,.55);
+    }
+    [data-theme="noir"] .pill{ background: rgba(255,255,255,.06); }
+
+    .tagRow{
       margin-top: 10px;
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
+      gap: 8px;
     }
     .tag{
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 11px;
+      border: 1px dashed var(--line);
+      border-radius: 999px;
       padding: 6px 10px;
+      color: var(--muted);
+      background: rgba(0,0,0,.02);
+    }
+    [data-theme="noir"] .tag{ background: rgba(255,255,255,.06); }
+
+    .favMark{
+      position:absolute;
+      top: 10px;
+      right: 10px;
+      font-family: var(--headline);
+      font-size: 14px;
+      padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      color: var(--muted);
-      background: rgba(255,255,255,.04);
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow);
+      display:none;
     }
+    [data-theme="noir"] .favMark{ background: rgba(255,255,255,.08); }
+    .tile.fav .favMark{ display:block; }
 
-    .cardBtns{
-      margin-top: 12px;
+    /* Bottom toolbar (new vs your side buttons / top bars) */
+    .dock{
+      position: fixed;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      width: min(980px, calc(100% - 24px));
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow2);
+      padding: 10px;
       display:flex;
-      flex-wrap:wrap;
       gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      z-index: 999;
+    }
+    [data-theme="noir"] .dock{
+      background: rgba(18,18,26,.72);
     }
 
-    .miniBtn{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--ink);
-      border-radius: 14px;
-      padding: 9px 10px;
-      cursor:pointer;
-      font-weight: 900;
+    .dockLeft{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-width: 140px;
+    }
+
+    .badge{
+      font-family: var(--mono);
       font-size: 12px;
-      transition: transform .08s ease, border-color .15s ease;
+      color: var(--muted);
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      white-space:nowrap;
+    }
+
+    .dockBtns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    /* Completely different button style: squared, bold, no gradients */
+    .btn{
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 2px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      cursor:pointer;
+      transition: background .12s ease, color .12s ease, transform .08s ease;
       user-select:none;
     }
-    .miniBtn:hover{ border-color: rgba(72,245,198,.60); }
-    .miniBtn:active{ transform: translateY(1px); }
+    .btn:active{ transform: translateY(1px); }
+    .btn:hover{ background: var(--ink); color: var(--bg); }
 
-    /* Focus modal */
+    .btn.pink{ border-color: var(--accent); color: var(--accent); }
+    .btn.pink:hover{ background: var(--accent); color: #fff; }
+
+    .btn.cyan{ border-color: var(--accent2); color: var(--accent2); }
+    .btn.cyan:hover{ background: var(--accent2); color: #001014; }
+
+    .btn.sun{ border-color: var(--accent3); color: var(--sun); }
+    .btn.sun:hover{ background: var(--accent3); color: #101015; }
+
+    .btn.ghost{
+      border-color: var(--line);
+      color: var(--muted);
+    }
+    .btn.ghost:hover{
+      background: rgba(0,0,0,.06);
+      color: var(--ink);
+    }
+
+    /* Modal */
     .overlay{
-      position:fixed;
+      position: fixed;
       inset:0;
       display:none;
       align-items:center;
       justify-content:center;
       background: rgba(0,0,0,.62);
-      z-index: 999;
+      z-index: 1000;
       padding: 18px;
     }
     .overlay.show{ display:flex; }
 
     .modal{
       width: min(900px, 100%);
-      border:1px solid var(--line);
       border-radius: 22px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.18)),
-        var(--card2);
-      box-shadow: var(--shadow);
-      padding: 16px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
     }
 
     .modalTop{
+      padding: 12px 14px;
       display:flex;
       justify-content:space-between;
+      align-items:center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(255,45,85,.10), rgba(45,226,230,.08), rgba(255,214,10,.10));
+    }
+
+    .modalTop strong{
+      font-family: var(--headline);
+      text-transform: uppercase;
+      letter-spacing:-.01em;
+      font-size: 14px;
+    }
+
+    .modalBody{ padding: 14px; }
+
+    .big{
+      font-family: var(--headline);
+      font-size: clamp(22px, 2.8vw, 44px);
+      line-height: 1.12;
+      margin: 0;
+    }
+
+    .modalMeta{
+      margin-top: 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .modalBtns{
+      margin-top: 14px;
+      display:flex;
       gap:10px;
-      align-items:flex-start;
-      margin-bottom: 10px;
-    }
-
-    .x{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.05);
-      border-radius: 14px;
-      padding: 10px 12px;
-      cursor:pointer;
-      font-weight: 950;
-      color: var(--ink);
-    }
-
-    .bigQuote{
-      margin:0;
-      font-size: clamp(22px, 2.8vw, 40px);
-      line-height: 1.2;
-      letter-spacing:-.02em;
-      color: var(--ink);
+      flex-wrap:wrap;
     }
 
     .toast{
       position: fixed;
       left: 50%;
-      bottom: 18px;
+      bottom: 92px;
       transform: translateX(-50%);
-      background: rgba(0,0,0,.78);
+      background: rgba(16,16,21,.92);
       color: white;
-      border: 1px solid rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.18);
       border-radius: 14px;
       padding: 10px 12px;
       font-size: 13px;
-      box-shadow: var(--shadow);
       opacity: 0;
       pointer-events:none;
       transition: opacity .2s ease, transform .2s ease;
-      z-index: 1000;
+      z-index: 1100;
       max-width: min(980px, calc(100% - 24px));
       text-align:center;
+      font-family: var(--mono);
     }
     .toast.show{
       opacity: 1;
@@ -424,59 +428,111 @@
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="titleBlock">
-        <h1>Quote Current</h1>
-        <p>A timeline of lines about searching, study, prayer, and questions. Expand entries, save favorites, and open Focus mode.</p>
+  <section class="hero">
+    <div class="heroInner">
+      <div class="brand">
+        <h1>Signal &amp; Study</h1>
+        <p>A loud, poster-style quote wall. Click any tile to open it in Focus. Save favorites, shuffle, and add your own verified quotes from other books.</p>
       </div>
-      <div class="hud">
-        <div class="pill" id="stats">0 shown • 0 favorites</div>
-        <div class="pill">Keys: ↑/↓ move • Enter expand • C copy • F favorite • T theme</div>
-      </div>
-    </header>
-
-    <div class="controls">
-      <div>
-        <label for="search">Search</label>
-        <input id="search" placeholder="Search keyword, mood, theme…" />
-      </div>
-      <div>
-        <label for="book">Book</label>
-        <select id="book"></select>
-      </div>
-      <div>
-        <label for="view">View</label>
-        <select id="view">
-          <option value="all">All quotes</option>
-          <option value="favorites">Favorites only</option>
-        </select>
-      </div>
+      <div class="stamp" id="stamp">Edition: Web • Layout: Masonry</div>
     </div>
+  </section>
 
-    <div class="btnRow">
-      <button class="btn" id="expandAll"><span class="dot"></span>Expand all</button>
-      <button class="btn" id="collapseAll"><span class="dot coral"></span>Collapse all</button>
-      <button class="btn" id="shuffle"><span class="dot"></span>Shuffle</button>
-      <button class="btn" id="focus"><span class="dot sun"></span>Focus</button>
-      <button class="btn" id="theme"><span class="dot coral"></span>Theme</button>
+  <section class="filters">
+    <div class="field">
+      <label for="search">Search</label>
+      <input id="search" placeholder="Try: prayer, questions, study, reading…" />
     </div>
+    <div class="field">
+      <label for="book">Book</label>
+      <select id="book"></select>
+    </div>
+    <div class="field">
+      <label for="view">View</label>
+      <select id="view">
+        <option value="all">All</option>
+        <option value="favorites">Favorites</option>
+        <option value="user">User-added</option>
+      </select>
+    </div>
+  </section>
 
-    <div class="timeline" id="timeline"></div>
+  <main class="gridWrap">
+    <div class="masonry" id="grid"></div>
+  </main>
+
+  <div class="dock">
+    <div class="dockLeft">
+      <div class="badge" id="countBadge">0 tiles</div>
+    </div>
+    <div class="dockBtns">
+      <button class="btn ghost" id="themeBtn">Theme</button>
+      <button class="btn cyan" id="shuffleBtn">Shuffle</button>
+      <button class="btn pink" id="copyBtn">Copy</button>
+      <button class="btn sun" id="favBtn">Favorite</button>
+      <button class="btn" id="addBtn">Add Quote</button>
+    </div>
   </div>
 
   <!-- Focus modal -->
   <div class="overlay" id="overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true">
       <div class="modalTop">
-        <div class="pill" id="focusMeta" style="box-shadow:none;background:rgba(255,255,255,.05)">FOCUS</div>
-        <button class="x" id="close">✕</button>
+        <strong id="modalTitle">Focus</strong>
+        <button class="btn ghost" id="closeBtn" style="padding:8px 10px;border-width:1px;">Close</button>
       </div>
-      <p class="bigQuote" id="focusQuote"></p>
-      <div class="btnRow" style="margin-top:14px">
-        <button class="btn" id="focusCopy"><span class="dot"></span>Copy</button>
-        <button class="btn" id="focusFav"><span class="dot sun"></span>Favorite</button>
-        <button class="btn" id="focusNext"><span class="dot coral"></span>Next</button>
+      <div class="modalBody">
+        <p class="big" id="modalQuote"></p>
+        <div class="modalMeta" id="modalMeta"></div>
+        <div class="modalBtns">
+          <button class="btn cyan" id="modalCopy">Copy</button>
+          <button class="btn sun" id="modalFav">Favorite</button>
+          <button class="btn pink" id="modalNext">Next</button>
+        </div>
+        <div style="margin-top:12px;color:var(--muted);font-family:var(--mono);font-size:12px;">
+          Tip: Use “Add Quote” to paste exact lines from other books you’ve read.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Quote modal -->
+  <div class="overlay" id="addOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalTop">
+        <strong>Add Your Quote</strong>
+        <button class="btn ghost" id="addClose" style="padding:8px 10px;border-width:1px;">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="field">
+          <label>Quote (paste exact text)</label>
+          <input id="aq_text" placeholder='Example: "..."' />
+        </div>
+        <div class="field" style="margin-top:10px;">
+          <label>Book</label>
+          <input id="aq_book" placeholder="Book title" />
+        </div>
+        <div class="field" style="margin-top:10px;">
+          <label>Author</label>
+          <input id="aq_author" placeholder="Author name" />
+        </div>
+        <div class="field" style="margin-top:10px;">
+          <label>Citation (optional)</label>
+          <input id="aq_cite" placeholder="(Author page#) or chapter" />
+        </div>
+        <div class="field" style="margin-top:10px;">
+          <label>Tags (comma separated)</label>
+          <input id="aq_tags" placeholder="reading, prayer, questions" />
+        </div>
+
+        <div class="modalBtns" style="margin-top:14px;">
+          <button class="btn pink" id="aq_save">Save</button>
+          <button class="btn ghost" id="aq_clear">Clear</button>
+        </div>
+
+        <div style="margin-top:10px;color:var(--muted);font-family:var(--mono);font-size:12px;">
+          Saved quotes stay in your browser (localStorage).
+        </div>
       </div>
     </div>
   </div>
@@ -484,61 +540,87 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // Your quote included EXACTLY as typed; it is NOT the first entry.
-    // Other lines are original "Collection" quotes in similar themes to avoid misquoting books.
-    const quotes = [
-      { id:"c1", text:"He studied until the page felt like a mirror, asking him what he truly believed.", book:"Collection", author:"", cite:"", themes:["study","belief","questions"] },
-      { id:"wiesel-4", text:"I read, I studied, I prayed... I wanted to ask him the questions that thronged my mind", book:"Night", author:"Elie Wiesel", cite:"(Wiesel 4)", themes:["reading","study","prayer","questions"] },
-      { id:"c2", text:"Prayer became less about answers and more about staying human.", book:"Collection", author:"", cite:"", themes:["prayer","identity"] },
-      { id:"c3", text:"He kept a careful face, but inside his mind was loud with why.", book:"Collection", author:"", cite:"", themes:["questions","inner life"] },
-      { id:"c4", text:"He read for comfort and found responsibility instead.", book:"Collection", author:"", cite:"", themes:["reading","duty"] },
-      { id:"c5", text:"He wanted a teacher who could stand beside a question without rushing it.", book:"Collection", author:"", cite:"", themes:["learning","questions"] },
-      { id:"c6", text:"He studied as if knowledge could protect the people he loved.", book:"Collection", author:"", cite:"", themes:["study","love"] },
-      { id:"c7", text:"Every answer opened into a hallway of new questions.", book:"Collection", author:"", cite:"", themes:["questions","truth"] }
+    // Your quote included EXACTLY as typed (unchanged).
+    // Other entries include:
+    // - Original thematic lines (labeled "Original")
+    // - Pre-labeled "Paste your quote" tiles for other books (so you can add real quotes safely)
+
+    const baseQuotes = [
+      // Original tiles (not attributed to books)
+      { id:"o1", text:"He studied like a person trying to build a doorway out of facts.", book:"Original", author:"—", cite:"", tags:["study","seeking"] },
+      { id:"o2", text:"Prayer was the only language he had left for the questions.", book:"Original", author:"—", cite:"", tags:["prayer","questions"] },
+      { id:"o3", text:"Reading didn’t calm him—it sharpened the need to know.", book:"Original", author:"—", cite:"", tags:["reading","questions"] },
+
+      // Your required quote (unchanged)
+      { id:"wiesel-4", text:"I read, I studied, I prayed... I wanted to ask him the questions that thronged my mind", book:"Night", author:"Elie Wiesel", cite:"(Wiesel 4)", tags:["reading","study","prayer","questions"] },
+
+      { id:"o4", text:"He wanted answers, but he learned to live inside the asking.", book:"Original", author:"—", cite:"", tags:["questions","faith"] },
+      { id:"o5", text:"He read as if the next sentence might finally explain the world.", book:"Original", author:"—", cite:"", tags:["reading","truth"] },
+
+      // “Different books” slots (you paste exact quotes later)
+      { id:"slot1", text:"PASTE A QUOTE HERE", book:"The Book Thief", author:"Markus Zusak", cite:"", tags:["slot","war","reading"], isSlot:true },
+      { id:"slot2", text:"PASTE A QUOTE HERE", book:"The Human Comedy", author:"William Saroyan", cite:"", tags:["slot","family","duty"], isSlot:true },
+      { id:"slot3", text:"PASTE A QUOTE HERE", book:"Your choice", author:"Your choice", cite:"", tags:["slot"], isSlot:true },
     ];
 
     const els = {
-      timeline: document.getElementById("timeline"),
       search: document.getElementById("search"),
       book: document.getElementById("book"),
       view: document.getElementById("view"),
-      stats: document.getElementById("stats"),
-      toast: document.getElementById("toast"),
+      grid: document.getElementById("grid"),
+      countBadge: document.getElementById("countBadge"),
 
-      expandAll: document.getElementById("expandAll"),
-      collapseAll: document.getElementById("collapseAll"),
-      shuffle: document.getElementById("shuffle"),
-      focus: document.getElementById("focus"),
-      theme: document.getElementById("theme"),
+      themeBtn: document.getElementById("themeBtn"),
+      shuffleBtn: document.getElementById("shuffleBtn"),
+      copyBtn: document.getElementById("copyBtn"),
+      favBtn: document.getElementById("favBtn"),
+      addBtn: document.getElementById("addBtn"),
 
       overlay: document.getElementById("overlay"),
-      close: document.getElementById("close"),
-      focusQuote: document.getElementById("focusQuote"),
-      focusMeta: document.getElementById("focusMeta"),
-      focusCopy: document.getElementById("focusCopy"),
-      focusFav: document.getElementById("focusFav"),
-      focusNext: document.getElementById("focusNext"),
+      closeBtn: document.getElementById("closeBtn"),
+      modalTitle: document.getElementById("modalTitle"),
+      modalQuote: document.getElementById("modalQuote"),
+      modalMeta: document.getElementById("modalMeta"),
+      modalCopy: document.getElementById("modalCopy"),
+      modalFav: document.getElementById("modalFav"),
+      modalNext: document.getElementById("modalNext"),
+
+      addOverlay: document.getElementById("addOverlay"),
+      addClose: document.getElementById("addClose"),
+      aq_text: document.getElementById("aq_text"),
+      aq_book: document.getElementById("aq_book"),
+      aq_author: document.getElementById("aq_author"),
+      aq_cite: document.getElementById("aq_cite"),
+      aq_tags: document.getElementById("aq_tags"),
+      aq_save: document.getElementById("aq_save"),
+      aq_clear: document.getElementById("aq_clear"),
+
+      toast: document.getElementById("toast"),
     };
 
     const storage = {
-      getTheme: () => localStorage.getItem("qc_theme") || "dark",
-      setTheme: (t) => localStorage.setItem("qc_theme", t),
+      getTheme: () => localStorage.getItem("ss_theme") || "paper",
+      setTheme: (t) => localStorage.setItem("ss_theme", t),
       getFavs: () => {
-        try { return JSON.parse(localStorage.getItem("qc_favs") || "[]"); }
-        catch { return []; }
+        try { return JSON.parse(localStorage.getItem("ss_favs") || "[]"); } catch { return []; }
       },
-      setFavs: (arr) => localStorage.setItem("qc_favs", JSON.stringify(arr))
+      setFavs: (arr) => localStorage.setItem("ss_favs", JSON.stringify(arr)),
+      getUser: () => {
+        try { return JSON.parse(localStorage.getItem("ss_user") || "[]"); } catch { return []; }
+      },
+      setUser: (arr) => localStorage.setItem("ss_user", JSON.stringify(arr)),
     };
 
     let favorites = new Set(storage.getFavs());
-    let focusedId = null;
-    let cursor = 0;
+    let userQuotes = storage.getUser();
+    let quotes = [];
+    let currentId = null;
 
     function showToast(msg){
       els.toast.textContent = msg;
       els.toast.classList.add("show");
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => els.toast.classList.remove("show"), 1500);
+      showToast._t = setTimeout(() => els.toast.classList.remove("show"), 1400);
     }
 
     function escapeHtml(str){
@@ -549,165 +631,107 @@
 
     function uniq(arr){ return Array.from(new Set(arr)).sort((a,b)=>a.localeCompare(b)); }
 
-    function matchesQuery(q, item){
-      if(!q) return true;
-      const hay = [item.text, item.book, item.author, item.cite || "", ...(item.themes||[])].join(" ").toLowerCase();
-      return hay.includes(q.toLowerCase());
+    function rebuildQuotes(){
+      // Put user quotes into the mix but NOT first
+      quotes = [
+        ...baseQuotes.slice(0, 2),
+        ...userQuotes,
+        ...baseQuotes.slice(2)
+      ];
     }
 
-    function buildBookFilter(){
-      const books = uniq(quotes.map(q => q.book));
+    function buildBookFilter(list){
+      const books = uniq(list.map(q => q.book));
       els.book.innerHTML =
         `<option value="">All books</option>` +
         books.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
     }
 
+    function matches(q, item){
+      if(!q) return true;
+      const hay = [item.text, item.book, item.author, item.cite || "", ...(item.tags||[])].join(" ").toLowerCase();
+      return hay.includes(q.toLowerCase());
+    }
+
     function filtered(){
       const q = (els.search.value || "").trim();
       const book = els.book.value;
-      const mode = els.view.value;
+      const view = els.view.value;
 
       return quotes.filter(item => {
-        if(mode === "favorites" && !favorites.has(item.id)) return false;
         if(book && item.book !== book) return false;
-        return matchesQuery(q, item);
+        if(view === "favorites" && !favorites.has(item.id)) return false;
+        if(view === "user" && !item.isUser) return false;
+        return matches(q, item);
       });
     }
 
     function render(){
       const list = filtered();
-      els.stats.textContent = `${list.length} shown • ${favorites.size} favorites`;
+
+      els.countBadge.textContent = `${list.length} tiles`;
+
+      if(!currentId || !list.some(x => x.id === currentId)){
+        currentId = list[0]?.id || null;
+      }
 
       if(list.length === 0){
-        els.timeline.innerHTML = `<div style="color:var(--muted);font-family:var(--mono);padding:14px;border:1px dashed var(--line);border-radius:18px;">
-          No results. Try clearing filters.
-        </div>`;
+        els.grid.innerHTML = `
+          <div class="tile">
+            <div class="ribbon"></div>
+            <div class="tileBody">
+              <p class="quote">No results. Clear your filters.</p>
+              <div class="meta"><span class="pill">Tip</span><span>Try removing the book filter.</span></div>
+            </div>
+          </div>`;
         return;
       }
 
-      cursor = Math.max(0, Math.min(cursor, list.length - 1));
-
-      els.timeline.innerHTML = list.map((q, idx) => {
-        const star = favorites.has(q.id);
-        const open = idx === cursor ? "open" : "";
-        const excerpt = q.text.length > 110 ? q.text.slice(0,110) + "…" : q.text;
-
+      els.grid.innerHTML = list.map(q => {
+        const isFav = favorites.has(q.id);
+        const tags = (q.tags||[]).slice(0, 5);
+        const title = q.book || "—";
         const author = q.author || "—";
         const cite = q.cite || "";
 
         return `
-          <div class="entry ${open}" data-id="${escapeHtml(q.id)}" data-idx="${idx}">
-            <div class="pin"></div>
-            <div class="card">
-              <div class="cardHead" role="button" tabindex="0" aria-label="Toggle quote">
-                <div>
-                  <div class="miniTitle">
-                    <span>${escapeHtml(q.book)}</span>
-                    <span class="flag ${star ? "star" : ""}">${star ? "★ Saved" : "☆ Save"}</span>
-                  </div>
-                  <div class="excerpt">“${escapeHtml(excerpt)}”</div>
-                </div>
+          <article class="tile ${isFav ? "fav" : ""}" data-id="${escapeHtml(q.id)}">
+            <div class="ribbon"></div>
+            <div class="favMark">★</div>
+            <div class="tileBody">
+              <p class="quote">“${escapeHtml(q.text)}”</p>
+              <div class="meta">
+                <span class="pill">${escapeHtml(title)}</span>
+                <span class="pill">${escapeHtml(author)}</span>
+                ${cite ? `<span class="pill">${escapeHtml(cite)}</span>` : ""}
+                ${q.isSlot ? `<span class="pill" style="border-color:var(--accent);color:var(--accent);">PASTE ME</span>` : ""}
+                ${q.isUser ? `<span class="pill" style="border-color:var(--accent2);color:var(--accent2);">USER</span>` : ""}
               </div>
-
-              <div class="cardBody">
-                <p class="full">“${escapeHtml(q.text)}”</p>
-                <div class="meta">
-                  <span><b>Author:</b> ${escapeHtml(author)}</span>
-                  <span><b>Citation:</b> ${escapeHtml(cite || "—")}</span>
-                </div>
-                <div class="tags">
-                  ${(q.themes||[]).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
-                </div>
-
-                <div class="cardBtns">
-                  <button class="miniBtn" data-act="copy">Copy</button>
-                  <button class="miniBtn" data-act="fav">${star ? "Unfavorite" : "Favorite"}</button>
-                  <button class="miniBtn" data-act="focus">Focus</button>
-                </div>
+              <div class="tagRow">
+                ${tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
               </div>
             </div>
-          </div>
+          </article>
         `;
       }).join("");
-
-      // auto scroll current open entry into view (nice on long lists)
-      const openEl = els.timeline.querySelector(`.entry[data-idx="${cursor}"]`);
-      if(openEl) openEl.scrollIntoView({block:"nearest"});
-    }
-
-    function toggleEntry(entryEl){
-      const idx = Number(entryEl.getAttribute("data-idx"));
-      cursor = idx;
-      render();
-    }
-
-    function toggleTheme(){
-      const cur = document.documentElement.getAttribute("data-theme") || "dark";
-      const next = cur === "light" ? "dark" : "light";
-      if(next === "light") document.documentElement.setAttribute("data-theme","light");
-      else document.documentElement.removeAttribute("data-theme");
-      storage.setTheme(next);
-      showToast("Theme: " + next);
-    }
-
-    function initTheme(){
-      const t = storage.getTheme();
-      if(t === "light") document.documentElement.setAttribute("data-theme","light");
-      else document.documentElement.removeAttribute("data-theme");
-    }
-
-    function toggleFavorite(id){
-      if(!id) return;
-      if(favorites.has(id)) favorites.delete(id);
-      else favorites.add(id);
-      storage.setFavs(Array.from(favorites));
-      showToast(favorites.has(id) ? "Saved" : "Removed");
-      render();
-    }
-
-    function fallbackCopy(text){
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.left = "-9999px";
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand("copy"); } catch(e){}
-      document.body.removeChild(ta);
-    }
-
-    async function copyQuote(id){
-      const q = quotes.find(x => x.id === id);
-      if(!q) return;
-      const cite = q.cite ? " " + q.cite : "";
-      const author = q.author ? q.author + ", " : "";
-      const text = `"${q.text}" — ${author}${q.book}${cite}`.trim();
-
-      try{
-        if(navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(text);
-        else fallbackCopy(text);
-        showToast("Copied!");
-      }catch{
-        fallbackCopy(text);
-        showToast("Copied!");
-      }
-    }
-
-    function shufflePick(){
-      const list = filtered();
-      if(list.length === 0) return;
-      cursor = Math.floor(Math.random() * list.length);
-      showToast("Shuffled");
-      render();
     }
 
     function openFocus(id){
-      const q = quotes.find(x => x.id === id);
+      const list = filtered();
+      const q = list.find(x => x.id === id) || quotes.find(x => x.id === id);
       if(!q) return;
-      focusedId = id;
-      els.focusMeta.textContent = `${q.book}${q.cite ? " • " + q.cite : ""}`;
-      els.focusQuote.textContent = `“${q.text}”`;
-      els.focusFav.textContent = (favorites.has(id) ? "Unfavorite" : "Favorite");
+
+      currentId = q.id;
+      els.modalTitle.textContent = q.book || "Focus";
+      els.modalQuote.textContent = `“${q.text}”`;
+      els.modalMeta.innerHTML = `
+        <span class="pill">${escapeHtml(q.author || "—")}</span>
+        ${q.cite ? `<span class="pill">${escapeHtml(q.cite)}</span>` : `<span class="pill">—</span>`}
+        <span class="pill">${favorites.has(q.id) ? "★ Favorited" : "☆ Not saved"}</span>
+      `;
+
+      els.modalFav.textContent = favorites.has(q.id) ? "Unfavorite" : "Favorite";
+
       els.overlay.classList.add("show");
       els.overlay.setAttribute("aria-hidden","false");
     }
@@ -717,93 +741,158 @@
       els.overlay.setAttribute("aria-hidden","true");
     }
 
-    function focusNext(){
+    function toggleFavorite(id){
+      if(!id) return;
+      if(favorites.has(id)) favorites.delete(id);
+      else favorites.add(id);
+      storage.setFavs(Array.from(favorites));
+      showToast(favorites.has(id) ? "Favorited" : "Removed");
+      render();
+      // update modal button text if open
+      els.modalFav.textContent = favorites.has(id) ? "Unfavorite" : "Favorite";
+    }
+
+    async function copyCurrent(){
+      const q = quotes.find(x => x.id === currentId) || filtered()[0];
+      if(!q) return;
+      const cite = q.cite ? " " + q.cite : "";
+      const author = q.author ? q.author + ", " : "";
+      const text = `"${q.text}" — ${author}${q.book}${cite}`.trim();
+
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(text);
+        else fallbackCopy(text);
+        showToast("Copied");
+      }catch{
+        fallbackCopy(text);
+        showToast("Copied");
+      }
+    }
+
+    function fallbackCopy(text){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand("copy"); }catch(e){}
+      document.body.removeChild(ta);
+    }
+
+    function shuffle(){
       const list = filtered();
       if(list.length === 0) return;
-      const idx = Math.max(0, list.findIndex(x => x.id === focusedId));
+      const pick = list[Math.floor(Math.random() * list.length)];
+      openFocus(pick.id);
+      showToast("Shuffled");
+    }
+
+    function nextInFocus(){
+      const list = filtered();
+      if(list.length === 0) return;
+      const idx = Math.max(0, list.findIndex(x => x.id === currentId));
       const next = list[(idx + 1) % list.length];
       openFocus(next.id);
     }
 
-    function expandAll(){
-      // make everything open by removing cursor-based open and applying open to all entries
-      const list = filtered();
-      if(list.length === 0) return;
-      els.timeline.querySelectorAll(".entry").forEach(e => e.classList.add("open"));
-      showToast("Expanded all");
+    function toggleTheme(){
+      const cur = document.documentElement.getAttribute("data-theme") || "paper";
+      const next = cur === "noir" ? "paper" : "noir";
+      if(next === "noir") document.documentElement.setAttribute("data-theme","noir");
+      else document.documentElement.removeAttribute("data-theme");
+      storage.setTheme(next);
+      showToast("Theme changed");
     }
 
-    function collapseAll(){
-      els.timeline.querySelectorAll(".entry").forEach(e => e.classList.remove("open"));
-      showToast("Collapsed all");
+    function initTheme(){
+      const t = storage.getTheme();
+      if(t === "noir") document.documentElement.setAttribute("data-theme","noir");
+      else document.documentElement.removeAttribute("data-theme");
+    }
+
+    function openAdd(){
+      els.addOverlay.classList.add("show");
+      els.addOverlay.setAttribute("aria-hidden","false");
+    }
+    function closeAdd(){
+      els.addOverlay.classList.remove("show");
+      els.addOverlay.setAttribute("aria-hidden","true");
+    }
+    function clearAdd(){
+      els.aq_text.value = "";
+      els.aq_book.value = "";
+      els.aq_author.value = "";
+      els.aq_cite.value = "";
+      els.aq_tags.value = "";
+    }
+
+    function saveUserQuote(){
+      const text = (els.aq_text.value || "").trim();
+      const book = (els.aq_book.value || "").trim() || "User quote";
+      const author = (els.aq_author.value || "").trim() || "—";
+      const cite = (els.aq_cite.value || "").trim();
+      const tags = (els.aq_tags.value || "").split(",").map(s => s.trim()).filter(Boolean);
+
+      if(!text){
+        showToast("Paste a quote first");
+        return;
+      }
+
+      const id = "u_" + Math.random().toString(16).slice(2);
+      userQuotes.unshift({ id, text, book, author, cite, tags, isUser:true });
+      storage.setUser(userQuotes);
+
+      rebuildQuotes();
+      buildBookFilter(quotes);
+      render();
+      closeAdd();
+      showToast("Saved quote");
+      clearAdd();
     }
 
     function wire(){
-      els.search.addEventListener("input", () => { cursor = 0; render(); });
-      els.book.addEventListener("change", () => { cursor = 0; render(); });
-      els.view.addEventListener("change", () => { cursor = 0; render(); });
+      els.search.addEventListener("input", render);
+      els.book.addEventListener("change", render);
+      els.view.addEventListener("change", render);
 
-      els.expandAll.addEventListener("click", expandAll);
-      els.collapseAll.addEventListener("click", collapseAll);
-      els.shuffle.addEventListener("click", shufflePick);
-
-      els.focus.addEventListener("click", () => {
-        const list = filtered();
-        if(list.length === 0) return;
-        const q = list[cursor];
-        openFocus(q.id);
+      els.grid.addEventListener("click", (e) => {
+        const tile = e.target.closest(".tile");
+        if(!tile) return;
+        openFocus(tile.getAttribute("data-id"));
       });
 
-      els.theme.addEventListener("click", toggleTheme);
-
-      // Timeline interactions
-      els.timeline.addEventListener("click", (e) => {
-        const head = e.target.closest(".cardHead");
-        const entry = e.target.closest(".entry");
-        if(!entry) return;
-
-        const actBtn = e.target.closest("[data-act]");
-        if(actBtn){
-          const id = entry.getAttribute("data-id");
-          const act = actBtn.getAttribute("data-act");
-          if(act === "copy") copyQuote(id);
-          if(act === "fav") toggleFavorite(id);
-          if(act === "focus") openFocus(id);
-          return;
-        }
-
-        if(head){
-          toggleEntry(entry);
-        }
-      });
+      els.themeBtn.addEventListener("click", toggleTheme);
+      els.shuffleBtn.addEventListener("click", shuffle);
+      els.copyBtn.addEventListener("click", copyCurrent);
+      els.favBtn.addEventListener("click", () => toggleFavorite(currentId));
+      els.addBtn.addEventListener("click", openAdd);
 
       // Focus modal
-      els.close.addEventListener("click", closeFocus);
-      els.overlay.addEventListener("click", (e) => {
-        if(e.target === els.overlay) closeFocus();
-      });
+      els.closeBtn.addEventListener("click", closeFocus);
+      els.overlay.addEventListener("click", (e) => { if(e.target === els.overlay) closeFocus(); });
+      els.modalCopy.addEventListener("click", copyCurrent);
+      els.modalFav.addEventListener("click", () => toggleFavorite(currentId));
+      els.modalNext.addEventListener("click", nextInFocus);
 
-      els.focusCopy.addEventListener("click", () => focusedId && copyQuote(focusedId));
-      els.focusFav.addEventListener("click", () => focusedId && toggleFavorite(focusedId));
-      els.focusNext.addEventListener("click", focusNext);
+      // Add modal
+      els.addClose.addEventListener("click", closeAdd);
+      els.addOverlay.addEventListener("click", (e) => { if(e.target === els.addOverlay) closeAdd(); });
+      els.aq_clear.addEventListener("click", clearAdd);
+      els.aq_save.addEventListener("click", saveUserQuote);
 
-      // Keyboard
+      // Minimal keyboard (no banner shown)
       window.addEventListener("keydown", (e) => {
-        if(e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA")) return;
-
-        const list = filtered();
-        if(e.key === "ArrowUp"){ e.preventDefault(); cursor = Math.max(0, cursor - 1); render(); }
-        if(e.key === "ArrowDown"){ e.preventDefault(); cursor = Math.min(Math.max(0, list.length - 1), cursor + 1); render(); }
-        if(e.key === "Enter" && list[cursor]){ openFocus(list[cursor].id); }
-        if(e.key.toLowerCase() === "c" && list[cursor]){ copyQuote(list[cursor].id); }
-        if(e.key.toLowerCase() === "f" && list[cursor]){ toggleFavorite(list[cursor].id); }
-        if(e.key.toLowerCase() === "t"){ toggleTheme(); }
+        if(e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT")) return;
+        if(e.key === "Escape"){ closeFocus(); closeAdd(); }
       });
     }
 
     (function boot(){
       initTheme();
-      buildBookFilter();
+      rebuildQuotes();
+      buildBookFilter(quotes);
+      currentId = quotes.find(q => q.id !== "wiesel-4")?.id || quotes[0]?.id || null;
       wire();
       render();
     })();
