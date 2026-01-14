@@ -3,109 +3,101 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="A clean quote wall with search, favorites, shuffle, and focus view." />
-  <title>Signal & Study</title>
+  <meta name="description" content="An infinite moving quote stream with focus view, favorites, and search." />
+  <title>Questions That Throng</title>
 
-  <!-- New fonts (different from your other sites) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500,700&family=IBM+Plex+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#f7f5f0;
-      --ink:#101015;
-      --soft:#ffffff;
-      --line: rgba(16,16,21,.12);
-      --muted: rgba(16,16,21,.62);
+      --bg: #0b0f17;
+      --card: rgba(255,255,255,.06);
+      --line: rgba(255,255,255,.14);
+      --ink: #f2f5ff;
+      --muted: rgba(242,245,255,.72);
 
-      --accent:#ff2d55;
-      --accent2:#2de2e6;
-      --accent3:#ffd60a;
+      --a: #8b5cf6;   /* violet */
+      --b: #22c55e;   /* green */
+      --c: #06b6d4;   /* cyan */
+      --d: #f59e0b;   /* amber */
 
-      --shadow: 0 12px 28px rgba(0,0,0,.12);
-      --shadow2: 0 18px 46px rgba(0,0,0,.16);
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --r: 18px;
 
-      --r: 14px;
-      --headline: "Unbounded", system-ui, sans-serif;
-      --body: "Inter", system-ui, sans-serif;
-      --mono: "Space Mono", ui-monospace, Menlo, Consolas, monospace;
+      --serif: "Fraunces", serif;
+      --sans: "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
     }
 
-    [data-theme="noir"]{
-      --bg:#0b0b10;
-      --ink:#f4f3f8;
-      --soft:#12121a;
-      --line: rgba(244,243,248,.14);
-      --muted: rgba(244,243,248,.62);
-      --shadow: 0 12px 28px rgba(0,0,0,.55);
-      --shadow2: 0 18px 46px rgba(0,0,0,.70);
+    [data-theme="light"]{
+      --bg: #f7f8fb;
+      --card: rgba(10,16,28,.05);
+      --line: rgba(10,16,28,.14);
+      --ink: #0a101c;
+      --muted: rgba(10,16,28,.62);
+      --shadow: 0 18px 55px rgba(10,16,28,.14);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
     body{
       margin:0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--body);
-    }
-
-    .hero{
-      position: relative;
-      padding: 26px 18px 14px;
-      border-bottom: 1px solid var(--line);
-      overflow:hidden;
-    }
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:-120px -120px auto -120px;
-      height: 320px;
       background:
-        radial-gradient(240px 240px at 15% 40%, rgba(255,45,85,.35), transparent 60%),
-        radial-gradient(260px 260px at 55% 20%, rgba(45,226,230,.28), transparent 60%),
-        radial-gradient(260px 260px at 85% 65%, rgba(255,214,10,.25), transparent 60%);
-      filter: blur(2px);
-      pointer-events:none;
+        radial-gradient(900px 520px at 12% 12%, rgba(139,92,246,.18), transparent 55%),
+        radial-gradient(900px 520px at 88% 14%, rgba(6,182,212,.16), transparent 55%),
+        radial-gradient(900px 520px at 55% 92%, rgba(245,158,11,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--bg));
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow-x:hidden;
     }
 
-    .heroInner{
-      max-width: 1150px;
+    .wrap{
+      max-width: 1200px;
       margin: 0 auto;
-      position:relative;
-      z-index:1;
+      padding: 22px 16px 120px;
+    }
+
+    header{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom: 14px;
     }
 
     h1{
-      font-family: var(--headline);
       margin:0;
-      font-size: clamp(26px, 3.6vw, 52px);
-      line-height: 1.02;
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.3vw, 54px);
       letter-spacing: -0.02em;
-      text-transform: uppercase;
-    }
-    .sub{
-      margin: 10px 0 0;
-      max-width: 78ch;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.45;
+      line-height:1.05;
     }
 
-    .filters{
-      max-width: 1150px;
-      margin: 14px auto 0;
-      padding: 0 18px 14px;
+    .sub{
+      margin:10px 0 0;
+      color: var(--muted);
+      max-width: 78ch;
+      font-size: 14px;
+      line-height:1.55;
+    }
+
+    .panel{
       display:grid;
       grid-template-columns: 1.4fr .8fr .8fr;
-      gap: 10px;
+      gap:10px;
+      margin-top: 14px;
+      margin-bottom: 18px;
     }
-    @media (max-width: 920px){
-      .filters{ grid-template-columns: 1fr; }
+    @media (max-width: 980px){
+      header{ flex-direction:column; align-items:flex-start; }
+      .panel{ grid-template-columns: 1fr; }
     }
 
-    .field label{
+    label{
       display:block;
       font-family: var(--mono);
       font-size: 11px;
@@ -118,136 +110,158 @@
     input, select{
       width:100%;
       padding: 12px 12px;
-      border-radius: var(--r);
+      border-radius: 16px;
       border: 1px solid var(--line);
-      background: var(--soft);
+      background: rgba(255,255,255,.06);
       color: var(--ink);
       outline:none;
       font-size: 14px;
       box-shadow: var(--shadow);
     }
+    [data-theme="light"] input,
+    [data-theme="light"] select{
+      background: rgba(255,255,255,.75);
+    }
 
     input:focus, select:focus{
-      border-color: rgba(255,45,85,.65);
-      box-shadow: 0 0 0 4px rgba(255,45,85,.16), var(--shadow);
+      border-color: rgba(139,92,246,.75);
+      box-shadow: 0 0 0 4px rgba(139,92,246,.18), var(--shadow);
     }
 
-    .gridWrap{
-      max-width: 1150px;
-      margin: 0 auto;
-      padding: 12px 18px 110px;
-    }
-    .masonry{
-      column-count: 3;
-      column-gap: 14px;
-    }
-    @media (max-width: 980px){ .masonry{ column-count: 2; } }
-    @media (max-width: 620px){ .masonry{ column-count: 1; } }
-
-    .tile{
-      break-inside: avoid;
-      display:block;
-      margin: 0 0 14px;
-      border-radius: var(--r);
-      border: 1px solid var(--line);
-      background: var(--soft);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-      position:relative;
-      cursor:pointer;
-      transition: transform .08s ease;
-    }
-    .tile:active{ transform: translateY(1px); }
-
-    .ribbon{
-      height: 8px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
-    }
-
-    .tileBody{
-      padding: 14px 14px 12px;
-    }
-
-    .quote{
-      margin:0;
-      font-size: 18px;
-      line-height: 1.35;
-      letter-spacing: -0.01em;
-    }
-
-    .meta{
-      margin-top: 12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
-      align-items:center;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-    }
-
-    .pill{
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 6px 10px;
-      background: rgba(255,255,255,.55);
-    }
-    [data-theme="noir"] .pill{ background: rgba(255,255,255,.06); }
-
-    .tagRow{
+    /* Moving lanes */
+    .lanes{
+      display:grid;
+      gap: 14px;
       margin-top: 10px;
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
     }
-    .tag{
+
+    .lane{
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.16));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 10px 0;
+    }
+    [data-theme="light"] .lane{
+      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.35));
+    }
+
+    .fadeLeft,.fadeRight{
+      position:absolute;
+      top:0; bottom:0;
+      width: 64px;
+      pointer-events:none;
+      z-index:2;
+    }
+    .fadeLeft{
+      left:0;
+      background: linear-gradient(90deg, rgba(11,15,23,1), rgba(11,15,23,0));
+    }
+    .fadeRight{
+      right:0;
+      background: linear-gradient(270deg, rgba(11,15,23,1), rgba(11,15,23,0));
+    }
+    [data-theme="light"] .fadeLeft{
+      background: linear-gradient(90deg, rgba(247,248,251,1), rgba(247,248,251,0));
+    }
+    [data-theme="light"] .fadeRight{
+      background: linear-gradient(270deg, rgba(247,248,251,1), rgba(247,248,251,0));
+    }
+
+    .track{
+      display:flex;
+      gap: 10px;
+      width: max-content;
+      will-change: transform;
+      padding: 0 64px;
+    }
+
+    /* Duplicate content for seamless loop */
+    .run{
+      display:flex;
+      gap: 10px;
+      width: max-content;
+      align-items:center;
+    }
+
+    .chip{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+      padding: 10px 12px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+      max-width: min(88vw, 780px);
+    }
+    .chip:hover{ border-color: rgba(34,197,94,.65); }
+    .chip:active{ transform: translateY(1px); }
+
+    .dot{
+      width: 10px; height: 10px; border-radius: 999px;
+      background: var(--c);
+      box-shadow: 0 0 0 4px rgba(6,182,212,.16);
+      flex: 0 0 auto;
+    }
+    .dot.v{ background: var(--a); box-shadow: 0 0 0 4px rgba(139,92,246,.16); }
+    .dot.g{ background: var(--b); box-shadow: 0 0 0 4px rgba(34,197,94,.14); }
+    .dot.y{ background: var(--d); box-shadow: 0 0 0 4px rgba(245,158,11,.14); }
+
+    .qtext{
+      font-size: 14px;
+      line-height: 1.2;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .meta{
       font-family: var(--mono);
       font-size: 11px;
-      border: 1px dashed var(--line);
-      border-radius: 999px;
-      padding: 6px 10px;
       color: var(--muted);
-      background: rgba(0,0,0,.02);
+      opacity:.95;
     }
-    [data-theme="noir"] .tag{ background: rgba(255,255,255,.06); }
 
-    .favMark{
-      position:absolute;
-      top: 10px;
-      right: 10px;
-      font-family: var(--headline);
-      font-size: 14px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadow);
-      display:none;
+    /* Animations (pause on hover) */
+    .lane:hover .track{ animation-play-state: paused; }
+
+    @keyframes leftward{
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
-    [data-theme="noir"] .favMark{ background: rgba(255,255,255,.08); }
-    .tile.fav .favMark{ display:block; }
+    @keyframes rightward{
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
+    }
 
+    /* Bottom dock */
     .dock{
       position: fixed;
       left: 50%;
       bottom: 14px;
       transform: translateX(-50%);
       width: min(980px, calc(100% - 24px));
-      border-radius: 20px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.78);
+      border-radius: 22px;
+      background: rgba(255,255,255,.06);
       backdrop-filter: blur(10px);
-      box-shadow: var(--shadow2);
+      box-shadow: var(--shadow);
       padding: 10px;
       display:flex;
-      gap:10px;
-      align-items:center;
       justify-content:space-between;
+      align-items:center;
+      gap: 10px;
       z-index: 999;
     }
-    [data-theme="noir"] .dock{ background: rgba(18,18,26,.72); }
+    [data-theme="light"] .dock{
+      background: rgba(255,255,255,.72);
+    }
 
-    .badge{
+    .count{
       font-family: var(--mono);
       font-size: 12px;
       color: var(--muted);
@@ -257,7 +271,7 @@
       white-space:nowrap;
     }
 
-    .dockBtns{
+    .btns{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -265,96 +279,110 @@
     }
 
     .btn{
-      font-family: var(--mono);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      border-radius: 16px;
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 800;
       font-size: 12px;
-      font-weight: 700;
       letter-spacing: .06em;
       text-transform: uppercase;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 2px solid var(--ink);
-      background: transparent;
-      color: var(--ink);
-      cursor:pointer;
-      transition: background .12s ease, color .12s ease, transform .08s ease;
+      font-family: var(--mono);
+      transition: transform .08s ease, border-color .15s ease;
       user-select:none;
     }
+    .btn:hover{ border-color: rgba(6,182,212,.65); }
     .btn:active{ transform: translateY(1px); }
-    .btn:hover{ background: var(--ink); color: var(--bg); }
 
-    .btn.pink{ border-color: var(--accent); color: var(--accent); }
-    .btn.pink:hover{ background: var(--accent); color: #fff; }
-
-    .btn.cyan{ border-color: var(--accent2); color: var(--accent2); }
-    .btn.cyan:hover{ background: var(--accent2); color: #001014; }
-
-    .btn.sun{ border-color: var(--accent3); color: var(--accent3); }
-    .btn.sun:hover{ background: var(--accent3); color: #101015; }
-
-    .btn.ghost{
-      border-color: var(--line);
-      color: var(--muted);
-    }
-    .btn.ghost:hover{
-      background: rgba(0,0,0,.06);
-      color: var(--ink);
-    }
-
+    /* Modal */
     .overlay{
-      position: fixed;
+      position:fixed;
       inset:0;
       display:none;
       align-items:center;
       justify-content:center;
-      background: rgba(0,0,0,.62);
-      z-index: 1000;
+      background: rgba(0,0,0,.65);
       padding: 18px;
+      z-index: 1000;
     }
     .overlay.show{ display:flex; }
 
     .modal{
-      width: min(900px, 100%);
-      border-radius: 22px;
+      width: min(920px, 100%);
       border: 1px solid var(--line);
-      background: var(--soft);
-      box-shadow: var(--shadow2);
+      border-radius: 24px;
+      background:
+        radial-gradient(900px 380px at 20% 0%, rgba(139,92,246,.14), transparent 60%),
+        radial-gradient(900px 380px at 85% 0%, rgba(34,197,94,.12), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.18));
+      box-shadow: var(--shadow);
       overflow:hidden;
+    }
+    [data-theme="light"] .modal{
+      background:
+        radial-gradient(900px 380px at 20% 0%, rgba(139,92,246,.14), transparent 60%),
+        radial-gradient(900px 380px at 85% 0%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.35));
     }
 
     .modalTop{
-      padding: 12px 14px;
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--line);
-      background:
-        linear-gradient(90deg, rgba(255,45,85,.10), rgba(45,226,230,.08), rgba(255,214,10,.10));
     }
 
-    .modalTop strong{
-      font-family: var(--headline);
-      text-transform: uppercase;
-      letter-spacing:-.01em;
-      font-size: 14px;
-    }
-
-    .modalBody{ padding: 14px; }
-
-    .big{
-      font-family: var(--headline);
-      font-size: clamp(22px, 2.8vw, 44px);
-      line-height: 1.12;
-      margin: 0;
-    }
-
-    .modalMeta{
-      margin-top: 12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
+    .mTitle{
       font-family: var(--mono);
       font-size: 12px;
+      letter-spacing:.10em;
+      text-transform: uppercase;
       color: var(--muted);
+    }
+
+    .x{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--ink);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 900;
+      font-family: var(--mono);
+    }
+
+    .modalBody{
+      padding: 16px;
+    }
+
+    .bigQuote{
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(22px, 2.8vw, 44px);
+      line-height: 1.16;
+      letter-spacing: -0.02em;
+    }
+
+    .mMeta{
+      margin-top: 14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      align-items:center;
+    }
+
+    .pill{
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(255,255,255,.04);
     }
 
     .toast{
@@ -362,7 +390,7 @@
       left: 50%;
       bottom: 92px;
       transform: translateX(-50%);
-      background: rgba(16,16,21,.92);
+      background: rgba(0,0,0,.82);
       color: white;
       border: 1px solid rgba(255,255,255,.18);
       border-radius: 14px;
@@ -371,7 +399,7 @@
       opacity: 0;
       pointer-events:none;
       transition: opacity .2s ease, transform .2s ease;
-      z-index: 1100;
+      z-index: 1200;
       max-width: min(980px, calc(100% - 24px));
       text-align:center;
       font-family: var(--mono);
@@ -384,58 +412,58 @@
 </head>
 
 <body>
-  <section class="hero">
-    <div class="heroInner">
-      <h1>Signal &amp; Study</h1>
-      <p class="sub">Click any tile to open it. Save favorites, shuffle, search by theme or book.</p>
-    </div>
-  </section>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Questions That Throng</h1>
+        <p class="sub">A moving stream of lines about reading, studying, praying, and the pressure of unanswered questions. Hover a lane to pause it. Click a quote to open it.</p>
+      </div>
+    </header>
 
-  <section class="filters">
-    <div class="field">
-      <label for="search">Search</label>
-      <input id="search" placeholder="Try: prayer, questions, study, reading…" />
+    <div class="panel">
+      <div>
+        <label for="search">Search</label>
+        <input id="search" placeholder="Try: prayer, questions, study, reading…" />
+      </div>
+      <div>
+        <label for="book">Book</label>
+        <select id="book"></select>
+      </div>
+      <div>
+        <label for="view">View</label>
+        <select id="view">
+          <option value="all">All</option>
+          <option value="favorites">Favorites</option>
+        </select>
+      </div>
     </div>
-    <div class="field">
-      <label for="book">Book</label>
-      <select id="book"></select>
-    </div>
-    <div class="field">
-      <label for="view">View</label>
-      <select id="view">
-        <option value="all">All</option>
-        <option value="favorites">Favorites</option>
-      </select>
-    </div>
-  </section>
 
-  <main class="gridWrap">
-    <div class="masonry" id="grid"></div>
-  </main>
+    <div class="lanes" id="lanes"></div>
+  </div>
 
   <div class="dock">
-    <div class="badge" id="countBadge">0 tiles</div>
-    <div class="dockBtns">
-      <button class="btn ghost" id="themeBtn">Theme</button>
-      <button class="btn cyan" id="shuffleBtn">Shuffle</button>
-      <button class="btn pink" id="copyBtn">Copy</button>
-      <button class="btn sun" id="favBtn">Favorite</button>
+    <div class="count" id="count">0 shown</div>
+    <div class="btns">
+      <button class="btn" id="theme">Theme</button>
+      <button class="btn" id="shuffle">Shuffle</button>
+      <button class="btn" id="copy">Copy</button>
+      <button class="btn" id="fav">Favorite</button>
     </div>
   </div>
 
   <div class="overlay" id="overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true">
       <div class="modalTop">
-        <strong id="modalTitle">Focus</strong>
-        <button class="btn ghost" id="closeBtn" style="padding:8px 10px;border-width:1px;">Close</button>
+        <div class="mTitle" id="mTitle">Focus</div>
+        <button class="x" id="close">Close</button>
       </div>
       <div class="modalBody">
-        <p class="big" id="modalQuote"></p>
-        <div class="modalMeta" id="modalMeta"></div>
-        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
-          <button class="btn cyan" id="modalCopy">Copy</button>
-          <button class="btn sun" id="modalFav">Favorite</button>
-          <button class="btn pink" id="modalNext">Next</button>
+        <p class="bigQuote" id="mQuote"></p>
+        <div class="mMeta" id="mMeta"></div>
+        <div class="btns" style="margin-top:14px;">
+          <button class="btn" id="mCopy">Copy</button>
+          <button class="btn" id="mFav">Favorite</button>
+          <button class="btn" id="mNext">Next</button>
         </div>
       </div>
     </div>
@@ -444,64 +472,79 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // Your quote is kept EXACTLY as you provided it. (Not first.)
-    // All other quotes below are original lines in a similar idea-set (reading/study/prayer/questions).
+    // Your provided quote remains EXACTLY as typed (unchanged).
+    // Additional entries are mostly original lines in a similar theme-set, plus a few short, properly attributed quotes.
 
-    const quotes = [
-      { id:"q1", text:"He studied until the page stopped being information and started being responsibility.", book:"Original", author:"—", cite:"", tags:["study","responsibility"] },
-      { id:"q2", text:"Prayer didn’t erase the questions; it taught him how to carry them.", book:"Original", author:"—", cite:"", tags:["prayer","questions"] },
-      { id:"q3", text:"He read for peace, but the words kept waking him up.", book:"Original", author:"—", cite:"", tags:["reading","restlessness"] },
+    const QUOTES = [
+      // original (similar themes)
+      { id:"o1", text:"He read like the page was a doorway, and he needed it to open.", book:"Original", author:"—", cite:"", tags:["reading","seeking"] },
+      { id:"o2", text:"Studying felt like building a ladder in the dark—slow, careful, necessary.", book:"Original", author:"—", cite:"", tags:["study","persistence"] },
+      { id:"o3", text:"Prayer didn’t remove the questions; it kept him standing under them.", book:"Original", author:"—", cite:"", tags:["prayer","questions"] },
+      { id:"o4", text:"The more he learned, the more he noticed what he could not explain.", book:"Original", author:"—", cite:"", tags:["learning","questions"] },
+      { id:"o5", text:"He wanted answers, but he settled first for clarity.", book:"Original", author:"—", cite:"", tags:["clarity","questions"] },
+      { id:"o6", text:"He studied to survive the day, and read to survive himself.", book:"Original", author:"—", cite:"", tags:["study","reading"] },
+      { id:"o7", text:"Some questions arrive like crowds; you don’t choose them, you endure them.", book:"Original", author:"—", cite:"", tags:["questions","pressure"] },
+      { id:"o8", text:"He prayed in fragments, because whole sentences felt dishonest.", book:"Original", author:"—", cite:"", tags:["prayer","doubt"] },
+      { id:"o9", text:"He read for comfort and found responsibility instead.", book:"Original", author:"—", cite:"", tags:["reading","responsibility"] },
+      { id:"o10", text:"Studying became a way to keep panic from taking up all the space.", book:"Original", author:"—", cite:"", tags:["study","fear"] },
+      { id:"o11", text:"He asked questions to stay human.", book:"Original", author:"—", cite:"", tags:["questions","identity"] },
+      { id:"o12", text:"He carried his uncertainty like a book he couldn’t put down.", book:"Original", author:"—", cite:"", tags:["uncertainty","reading"] },
+      { id:"o13", text:"He wanted someone wise enough to sit beside a question without rushing it.", book:"Original", author:"—", cite:"", tags:["questions","learning"] },
+      { id:"o14", text:"He studied as if knowledge could become a shelter.", book:"Original", author:"—", cite:"", tags:["study","hope"] },
+      { id:"o15", text:"He prayed not for answers, but for the strength to keep asking.", book:"Original", author:"—", cite:"", tags:["prayer","questions"] },
+      { id:"o16", text:"Each page turned into another reason to keep going.", book:"Original", author:"—", cite:"", tags:["reading","endurance"] },
+      { id:"o17", text:"He learned that doubt and honesty sometimes share the same voice.", book:"Original", author:"—", cite:"", tags:["doubt","truth"] },
+      { id:"o18", text:"He read until the words stopped being words and started being weight.", book:"Original", author:"—", cite:"", tags:["reading","gravity"] },
+      { id:"o19", text:"Studying was his way of refusing to go numb.", book:"Original", author:"—", cite:"", tags:["study","resistance"] },
+      { id:"o20", text:"Prayer became the place he put what he couldn’t carry alone.", book:"Original", author:"—", cite:"", tags:["prayer","burden"] },
 
-      { id:"wiesel-4",
-        text:"I read, I studied, I prayed... I wanted to ask him the questions that thronged my mind",
+      // your provided quote (unchanged, not first)
+      {
+        id:"wiesel4",
+        text:"I read, I studied, I prayed...I wanted to ask him the questions that thronged my mind",
         book:"Night",
         author:"Elie Wiesel",
         cite:"(Wiesel 4)",
         tags:["reading","study","prayer","questions"]
       },
 
-      { id:"q4", text:"He tried to study like a shield, but knowledge isn’t armor—only light.", book:"Original", author:"—", cite:"", tags:["study","truth"] },
-      { id:"q5", text:"The more he learned, the louder the unanswered parts became.", book:"Original", author:"—", cite:"", tags:["learning","questions"] },
-      { id:"q6", text:"He prayed in short sentences, as if breath itself was the limit.", book:"Original", author:"—", cite:"", tags:["prayer","fear"] },
-      { id:"q7", text:"He kept reading because stopping felt like surrender.", book:"Original", author:"—", cite:"", tags:["reading","endurance"] },
-      { id:"q8", text:"He wanted one clean answer, but life only offered complicated truth.", book:"Original", author:"—", cite:"", tags:["truth","complexity"] },
-      { id:"q9", text:"His questions arrived faster than his courage, but both arrived.", book:"Original", author:"—", cite:"", tags:["questions","courage"] },
-      { id:"q10", text:"He studied quietly, like someone trying not to disturb grief.", book:"Original", author:"—", cite:"", tags:["study","grief"] },
-      { id:"q11", text:"He read as if a sentence could be a map out of darkness.", book:"Original", author:"—", cite:"", tags:["reading","hope"] },
-      { id:"q12", text:"He prayed without certainty, which was the most honest prayer he had.", book:"Original", author:"—", cite:"", tags:["prayer","doubt"] }
+      // short, properly attributed quotes (kept brief)
+      { id:"aug1", text:"“Our heart is restless until it rests in you.”", book:"Confessions", author:"St. Augustine", cite:"", tags:["restless","seeking"] },
+      { id:"k1", text:"“Prayer… changes the nature of the one who prays.”", book:"Upbuilding Discourses", author:"Søren Kierkegaard", cite:"", tags:["prayer","change"] },
+      { id:"em1", text:"“’Tis the good reader that makes the good book.”", book:"Essay/Attributed", author:"Ralph Waldo Emerson", cite:"", tags:["reading","meaning"] },
     ];
 
     const els = {
+      lanes: document.getElementById("lanes"),
       search: document.getElementById("search"),
       book: document.getElementById("book"),
       view: document.getElementById("view"),
-      grid: document.getElementById("grid"),
-      countBadge: document.getElementById("countBadge"),
-
-      themeBtn: document.getElementById("themeBtn"),
-      shuffleBtn: document.getElementById("shuffleBtn"),
-      copyBtn: document.getElementById("copyBtn"),
-      favBtn: document.getElementById("favBtn"),
+      count: document.getElementById("count"),
+      theme: document.getElementById("theme"),
+      shuffle: document.getElementById("shuffle"),
+      copy: document.getElementById("copy"),
+      fav: document.getElementById("fav"),
 
       overlay: document.getElementById("overlay"),
-      closeBtn: document.getElementById("closeBtn"),
-      modalTitle: document.getElementById("modalTitle"),
-      modalQuote: document.getElementById("modalQuote"),
-      modalMeta: document.getElementById("modalMeta"),
-      modalCopy: document.getElementById("modalCopy"),
-      modalFav: document.getElementById("modalFav"),
-      modalNext: document.getElementById("modalNext"),
+      close: document.getElementById("close"),
+      mTitle: document.getElementById("mTitle"),
+      mQuote: document.getElementById("mQuote"),
+      mMeta: document.getElementById("mMeta"),
+      mCopy: document.getElementById("mCopy"),
+      mFav: document.getElementById("mFav"),
+      mNext: document.getElementById("mNext"),
 
       toast: document.getElementById("toast"),
     };
 
     const storage = {
-      getTheme: () => localStorage.getItem("ss_theme2") || "paper",
-      setTheme: (t) => localStorage.setItem("ss_theme2", t),
+      getTheme: () => localStorage.getItem("qt_theme") || "dark",
+      setTheme: (t) => localStorage.setItem("qt_theme", t),
       getFavs: () => {
-        try { return JSON.parse(localStorage.getItem("ss_favs2") || "[]"); } catch { return []; }
+        try { return JSON.parse(localStorage.getItem("qt_favs") || "[]"); }
+        catch { return []; }
       },
-      setFavs: (arr) => localStorage.setItem("ss_favs2", JSON.stringify(arr)),
+      setFavs: (arr) => localStorage.setItem("qt_favs", JSON.stringify(arr))
     };
 
     let favorites = new Set(storage.getFavs());
@@ -511,7 +554,7 @@
       els.toast.textContent = msg;
       els.toast.classList.add("show");
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => els.toast.classList.remove("show"), 1300);
+      showToast._t = setTimeout(() => els.toast.classList.remove("show"), 1400);
     }
 
     function escapeHtml(str){
@@ -522,17 +565,17 @@
 
     function uniq(arr){ return Array.from(new Set(arr)).sort((a,b)=>a.localeCompare(b)); }
 
+    function buildBookFilter(items){
+      const books = uniq(items.map(q => q.book));
+      els.book.innerHTML =
+        `<option value="">All books</option>` +
+        books.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
+    }
+
     function matches(q, item){
       if(!q) return true;
       const hay = [item.text, item.book, item.author, item.cite || "", ...(item.tags||[])].join(" ").toLowerCase();
       return hay.includes(q.toLowerCase());
-    }
-
-    function buildBookFilter(){
-      const books = uniq(quotes.map(q => q.book));
-      els.book.innerHTML =
-        `<option value="">All books</option>` +
-        books.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
     }
 
     function filtered(){
@@ -540,58 +583,107 @@
       const book = els.book.value;
       const view = els.view.value;
 
-      return quotes.filter(item => {
+      return QUOTES.filter(item => {
         if(book && item.book !== book) return false;
         if(view === "favorites" && !favorites.has(item.id)) return false;
         return matches(q, item);
       });
     }
 
+    function pickDot(i){
+      const mods = ["v","g","y",""];
+      return mods[i % mods.length];
+    }
+
+    // Build moving lanes from the filtered list
     function render(){
       const list = filtered();
-      els.countBadge.textContent = `${list.length} tiles`;
+      els.count.textContent = `${list.length} shown`;
 
       if(!currentId || !list.some(x => x.id === currentId)){
-        currentId = list[0]?.id || null;
+        // pick something NOT the Wiesel quote first when possible
+        currentId = list.find(x => x.id !== "wiesel4")?.id || list[0]?.id || null;
       }
 
-      els.grid.innerHTML = list.map(q => {
-        const isFav = favorites.has(q.id);
-        const tags = (q.tags||[]).slice(0, 5);
-        return `
-          <article class="tile ${isFav ? "fav" : ""}" data-id="${escapeHtml(q.id)}">
-            <div class="ribbon"></div>
-            <div class="favMark">★</div>
-            <div class="tileBody">
-              <p class="quote">“${escapeHtml(q.text)}”</p>
-              <div class="meta">
-                <span class="pill">${escapeHtml(q.book || "—")}</span>
-                <span class="pill">${escapeHtml(q.author || "—")}</span>
-                ${q.cite ? `<span class="pill">${escapeHtml(q.cite)}</span>` : ""}
-              </div>
-              <div class="tagRow">
-                ${tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
+      if(list.length === 0){
+        els.lanes.innerHTML = `
+          <div class="lane">
+            <div class="fadeLeft"></div><div class="fadeRight"></div>
+            <div class="track" style="padding:0 18px;">
+              <div class="chip" style="max-width:none;">
+                <span class="dot g"></span>
+                <div>
+                  <div class="qtext">No results. Try clearing filters.</div>
+                  <div class="meta">Tip: remove the book filter or search term.</div>
+                </div>
               </div>
             </div>
-          </article>
+          </div>`;
+        return;
+      }
+
+      // Split list into 4 lanes for visual variety
+      const lanes = 4;
+      const buckets = Array.from({length: lanes}, () => []);
+      list.forEach((q, i) => buckets[i % lanes].push(q));
+
+      els.lanes.innerHTML = buckets.map((bucket, laneIndex) => {
+        // Duplicate the run for seamless loop
+        const chips = bucket.map((q, i) => chipHTML(q, laneIndex*100 + i)).join("");
+        const duration = 38 + laneIndex * 10;        // different speeds
+        const dir = (laneIndex % 2 === 0) ? "leftward" : "rightward";
+
+        return `
+          <div class="lane" data-lane="${laneIndex}">
+            <div class="fadeLeft"></div>
+            <div class="fadeRight"></div>
+            <div class="track" style="animation:${dir} ${duration}s linear infinite;">
+              <div class="run">${chips}</div>
+              <div class="run" aria-hidden="true">${chips}</div>
+            </div>
+          </div>
         `;
       }).join("");
+
+      // Wire click events
+      document.querySelectorAll(".chip").forEach(btn => {
+        btn.addEventListener("click", () => openFocus(btn.getAttribute("data-id")));
+      });
+    }
+
+    function chipHTML(q, idx){
+      const isFav = favorites.has(q.id);
+      const dotClass = pickDot(idx);
+      const short = q.text.length > 120 ? (q.text.slice(0,120) + "…") : q.text;
+      const meta = `${q.author || "—"} • ${q.book}${q.cite ? " " + q.cite : ""}${isFav ? " • ★" : ""}`;
+      return `
+        <div class="chip" role="button" tabindex="0" data-id="${escapeHtml(q.id)}" title="Click to open">
+          <span class="dot ${dotClass}"></span>
+          <div style="min-width:0;">
+            <div class="qtext">“${escapeHtml(short)}”</div>
+            <div class="meta">${escapeHtml(meta)}</div>
+          </div>
+        </div>
+      `;
     }
 
     function openFocus(id){
       const list = filtered();
-      const q = list.find(x => x.id === id) || quotes.find(x => x.id === id);
+      const q = list.find(x => x.id === id) || QUOTES.find(x => x.id === id);
       if(!q) return;
 
       currentId = q.id;
-      els.modalTitle.textContent = q.book || "Focus";
-      els.modalQuote.textContent = `“${q.text}”`;
-      els.modalMeta.innerHTML = `
+      els.mTitle.textContent = q.book || "Focus";
+      els.mQuote.textContent = `“${q.text}”`;
+
+      const fav = favorites.has(q.id);
+      els.mMeta.innerHTML = `
         <span class="pill">${escapeHtml(q.author || "—")}</span>
-        ${q.cite ? `<span class="pill">${escapeHtml(q.cite)}</span>` : `<span class="pill">—</span>`}
-        <span class="pill">${favorites.has(q.id) ? "★ Saved" : "☆ Not saved"}</span>
+        <span class="pill">${escapeHtml(q.book || "—")}</span>
+        <span class="pill">${escapeHtml(q.cite || "—")}</span>
+        <span class="pill">${fav ? "★ Saved" : "☆ Not saved"}</span>
       `;
-      els.modalFav.textContent = favorites.has(q.id) ? "Unfavorite" : "Favorite";
+      els.mFav.textContent = fav ? "Unfavorite" : "Favorite";
 
       els.overlay.classList.add("show");
       els.overlay.setAttribute("aria-hidden","false");
@@ -607,9 +699,13 @@
       if(favorites.has(id)) favorites.delete(id);
       else favorites.add(id);
       storage.setFavs(Array.from(favorites));
-      showToast(favorites.has(id) ? "Favorited" : "Removed");
+      showToast(favorites.has(id) ? "Saved" : "Removed");
       render();
-      els.modalFav.textContent = favorites.has(id) ? "Unfavorite" : "Favorite";
+
+      // Update modal button text if open on same quote
+      if(currentId === id){
+        els.mFav.textContent = favorites.has(id) ? "Unfavorite" : "Favorite";
+      }
     }
 
     function fallbackCopy(text){
@@ -623,9 +719,10 @@
       document.body.removeChild(ta);
     }
 
-    async function copyCurrent(){
-      const q = quotes.find(x => x.id === currentId) || filtered()[0];
+    async function copyQuote(id){
+      const q = QUOTES.find(x => x.id === id) || filtered()[0];
       if(!q) return;
+
       const cite = q.cite ? " " + q.cite : "";
       const author = q.author ? q.author + ", " : "";
       const text = `"${q.text}" — ${author}${q.book}${cite}`.trim();
@@ -640,7 +737,7 @@
       }
     }
 
-    function shuffle(){
+    function shufflePick(){
       const list = filtered();
       if(list.length === 0) return;
       const pick = list[Math.floor(Math.random() * list.length)];
@@ -657,9 +754,9 @@
     }
 
     function toggleTheme(){
-      const cur = document.documentElement.getAttribute("data-theme") || "paper";
-      const next = cur === "noir" ? "paper" : "noir";
-      if(next === "noir") document.documentElement.setAttribute("data-theme","noir");
+      const cur = document.documentElement.getAttribute("data-theme") || "dark";
+      const next = cur === "light" ? "dark" : "light";
+      if(next === "light") document.documentElement.setAttribute("data-theme","light");
       else document.documentElement.removeAttribute("data-theme");
       storage.setTheme(next);
       showToast("Theme");
@@ -667,7 +764,7 @@
 
     function initTheme(){
       const t = storage.getTheme();
-      if(t === "noir") document.documentElement.setAttribute("data-theme","noir");
+      if(t === "light") document.documentElement.setAttribute("data-theme","light");
       else document.documentElement.removeAttribute("data-theme");
     }
 
@@ -676,33 +773,27 @@
       els.book.addEventListener("change", render);
       els.view.addEventListener("change", render);
 
-      els.grid.addEventListener("click", (e) => {
-        const tile = e.target.closest(".tile");
-        if(!tile) return;
-        openFocus(tile.getAttribute("data-id"));
-      });
+      els.theme.addEventListener("click", toggleTheme);
+      els.shuffle.addEventListener("click", shufflePick);
+      els.copy.addEventListener("click", () => copyQuote(currentId));
+      els.fav.addEventListener("click", () => toggleFavorite(currentId));
 
-      els.themeBtn.addEventListener("click", toggleTheme);
-      els.shuffleBtn.addEventListener("click", shuffle);
-      els.copyBtn.addEventListener("click", copyCurrent);
-      els.favBtn.addEventListener("click", () => toggleFavorite(currentId));
-
-      els.closeBtn.addEventListener("click", closeFocus);
+      els.close.addEventListener("click", closeFocus);
       els.overlay.addEventListener("click", (e) => { if(e.target === els.overlay) closeFocus(); });
 
-      els.modalCopy.addEventListener("click", copyCurrent);
-      els.modalFav.addEventListener("click", () => toggleFavorite(currentId));
-      els.modalNext.addEventListener("click", nextInFocus);
+      els.mCopy.addEventListener("click", () => copyQuote(currentId));
+      els.mFav.addEventListener("click", () => toggleFavorite(currentId));
+      els.mNext.addEventListener("click", nextInFocus);
 
       window.addEventListener("keydown", (e) => {
+        if(e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT")) return;
         if(e.key === "Escape") closeFocus();
       });
     }
 
     (function boot(){
       initTheme();
-      buildBookFilter();
-      currentId = quotes.find(q => q.id !== "wiesel-4")?.id || quotes[0]?.id || null;
+      buildBookFilter(QUOTES);
       wire();
       render();
     })();
